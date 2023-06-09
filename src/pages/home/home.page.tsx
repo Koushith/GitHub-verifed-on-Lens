@@ -9,9 +9,11 @@ import Check from "../../assets/icons/check.svg";
 import { ProfileCard } from "../../components";
 
 export const Home = () => {
-  // const { data: profiles } = useExploreProfiles({
-  //   limit: 50,
-  // });
+  const { data: profiles } = useExploreProfiles({
+    limit: 50,
+  });
+
+  console.log("profiles", profiles);
   return (
     <HomePageContainer>
       {/* <div className="p-20">
@@ -47,6 +49,10 @@ export const Home = () => {
         <ProfileCard />
         <ProfileCard />
         <ProfileCard />
+
+        {profiles?.map((profile, index) => (
+          <ProfileCard key={index} profile={profile} />
+        ))}
       </div>
     </HomePageContainer>
   );

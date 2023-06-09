@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import { formatPicture } from "../../utils";
 
 export const ProfileCardContainer = styled.div`
   padding: 1rem;
@@ -72,28 +73,37 @@ export const ProfileCardContainer = styled.div`
   }
 `;
 
-export const ProfileCard = () => {
+export const ProfileCard = ({ profile }: any) => {
+  console.log("rest---", profile);
   const navigate = useNavigate();
   return (
-    <ProfileCardContainer onClick={() => navigate("/profile/:id")}>
+    <ProfileCardContainer onClick={() => navigate(`/profile/{}`)}>
       <div className="meta">
         <div className="profile-image">
-          <img
-            src="https://lh3.googleusercontent.com/a/AGNmyxbOVC6bhUvu7HscLQLKMfnm2aRd-VZX-PHMF3jB=s96-c"
-            alt="image"
-          />
-          <CheckIcon className="check-icon" />
+          {profile?.picture && profile?.picture.__typename === "MediaSet" ? (
+            <img
+              src={formatPicture(profile?.picture)}
+              width="120"
+              height="120"
+              alt={profile.handle}
+            />
+          ) : (
+            <>
+              <img
+                src="https://lh3.googleusercontent.com/a/AGNmyxbOVC6bhUvu7HscLQLKMfnm2aRd-VZX-PHMF3jB=s96-c"
+                alt="image"
+              />
+              <CheckIcon className="check-icon" />
+            </>
+          )}
         </div>
         {/* <button>Follow</button> */}
       </div>
 
       <div className="meta-info">
-        <p className="name">Koushith</p>
+        <p className="name">{profile?.handle}</p>
 
-        <p className="bio">
-          I am an extraordinary individual with a diverse range of talents and a
-          relentless pursuit of knowledge.
-        </p>
+        <p className="bio">{profile?.bio}</p>
       </div>
     </ProfileCardContainer>
   );

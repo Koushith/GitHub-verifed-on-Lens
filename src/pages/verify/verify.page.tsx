@@ -1,6 +1,19 @@
 import { Button, Input } from "../../components";
 import { Container } from "../../components/common";
-import { VerifyContainer } from "./verify.styles";
+import {
+  ProgressStatus,
+  QRCcodeContainer,
+  Spinner,
+  VerifyContainer,
+} from "./verify.styles";
+
+import toast, { Toaster } from "react-hot-toast";
+
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { keyframes, styled } from "styled-components";
 
 export const Verify = () => {
   return (
@@ -8,7 +21,7 @@ export const Verify = () => {
       <VerifyContainer>
         <div className="left">
           <>
-            <div className="form-container">
+            {/* <div className="form-container">
               <h1 className="title">Get your verified Tick mark</h1>
               <div className="form-group">
                 <Input
@@ -43,9 +56,13 @@ export const Verify = () => {
                 //   onClick={submitHandler}
                 className="prove-button"
               />
-            </div>
+            </div> */}
+
+            <QRCode />
           </>
         </div>
+
+        {/* right side------------------------- */}
 
         <div className="right">
           <h1>Claim your Github Contributions on Lens</h1>
@@ -64,5 +81,33 @@ export const Verify = () => {
         </div>
       </VerifyContainer>
     </Container>
+  );
+};
+
+export const QRCode = ({ appUrl }: any) => {
+  return (
+    <QRCcodeContainer>
+      <h1 className="title">Almost there. Lets get Verified!!</h1>
+
+      <a className="link" target="_blank" rel="noreferrer" href={appUrl}>
+        {" "}
+        Click here to open in Reclaim Wallet
+      </a>
+
+      <p className="seperator">OR</p>
+
+      <div className="qr-code">
+        <QRCodeSVG value={appUrl} className="react-qr" />
+      </div>
+
+      <p className="scan-helper-text">
+        <span>Scan the QR </span> to submit your claim on the Reclaim app
+      </p>
+
+      <ProgressStatus>
+        <Spinner />
+        Waiting to be verified. Please don't close this tab
+      </ProgressStatus>
+    </QRCcodeContainer>
   );
 };

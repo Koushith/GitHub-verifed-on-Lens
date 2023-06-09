@@ -106,7 +106,7 @@ export const Navbar = () => {
         <ul>
           <li>
             <NavLink to="/verify"> Get Verified</NavLink>
-            <NavLink to="/how-it-works"> Hire Rockstar Devs</NavLink>
+            <NavLink to="/job-listings"> Job Listings</NavLink>
             <NavLink to="/about">Profile</NavLink>
 
             <button>Login</button>

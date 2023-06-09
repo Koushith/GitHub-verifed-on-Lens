@@ -31,12 +31,12 @@ const lensConfig: LensConfig = {
 };
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <>
-      <>
-        <>
+    <Provider store={store}>
+      <WagmiConfig client={client}>
+        <LensProvider config={lensConfig}>
           <RouterProvider router={routerConfig} />
-        </>
-      </>
-    </>
+        </LensProvider>
+      </WagmiConfig>
+    </Provider>
   </React.StrictMode>
 );
