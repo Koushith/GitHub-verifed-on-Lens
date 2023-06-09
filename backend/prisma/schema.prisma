@@ -11,9 +11,15 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  bio   String?
-  // intrest    String[]
-  // isVerified Boolean
+  id         Int     @id @default(autoincrement())
+  email      String  @unique
+  bio        String?
+  biotest    String
+  isVerified Boolean
+  intrests   Json?
+}
+
+model Intrests {
+  id      Int     @id @default(autoincrement())
+  intrest String?
 }
