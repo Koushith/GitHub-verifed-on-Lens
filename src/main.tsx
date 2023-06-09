@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import "./index.css";
+import "./App.css";
 import { LensProvider } from "@lens-protocol/react-web";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet, polygon } from "wagmi/chains";
@@ -14,6 +14,10 @@ import { LensConfig, development } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
 import { RouterProvider } from "react-router-dom";
 import { routerConfig } from "./router/router.config.tsx";
+import { Provider } from "react-redux";
+import { store } from "./store/store.ts";
+
+const authenticate = async () => {};
 
 const client = createClient({
   autoConnect: true,
@@ -27,10 +31,12 @@ const lensConfig: LensConfig = {
 };
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <WagmiConfig client={client}>
-      <LensProvider config={lensConfig}>
-        <RouterProvider router={routerConfig} />
-      </LensProvider>
-    </WagmiConfig>
+    <>
+      <>
+        <>
+          <RouterProvider router={routerConfig} />
+        </>
+      </>
+    </>
   </React.StrictMode>
 );

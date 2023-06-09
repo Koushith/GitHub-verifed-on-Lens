@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import { ProfilePage } from "../pages";
+import { ProfilePage, Verify } from "../pages";
 import { Home } from "../pages/home/home.page";
 
 export const routerConfig = createBrowserRouter([
@@ -11,6 +11,10 @@ export const routerConfig = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
       },
       {
         path: "/profile/:id",
