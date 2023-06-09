@@ -14,7 +14,6 @@ model User {
   id         Int     @id @default(autoincrement())
   email      String  @unique
   bio        String?
-  biotest    String
   isVerified Boolean
   intrests   Json?
 }
@@ -22,4 +21,14 @@ model User {
 model Intrests {
   id      Int     @id @default(autoincrement())
   intrest String?
+}
+
+model Jobs {
+  id             Int      @id @default(autoincrement())
+  position       String
+  companyName    String
+  location       String
+  experience     String
+  postedOn       DateTime
+  jobDescription String
 }
