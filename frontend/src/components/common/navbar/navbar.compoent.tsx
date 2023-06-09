@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 // import Bars from "../../../assets/icons/bars.svg";
@@ -97,6 +97,7 @@ export const NavbarContainer = styled.div`
 `;
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <NavbarContainer>
       <nav>
@@ -109,7 +110,7 @@ export const Navbar = () => {
             <NavLink to="/job-listings"> Job Listings</NavLink>
             <NavLink to="/about">Profile</NavLink>
 
-            <button>Login</button>
+            <button onClick={() => navigate("/signup")}>Login</button>
           </li>
         </ul>
         {/* mobile-nav */}

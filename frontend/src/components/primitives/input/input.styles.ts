@@ -5,7 +5,7 @@ export const StyledInput = styled.div`
   flex-direction: column;
 
   label {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #21293c;
     font-weight: 600;
   }

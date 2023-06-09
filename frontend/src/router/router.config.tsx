@@ -5,6 +5,7 @@ import {
   JobDetails,
   JobListing,
   ProfilePage,
+  SignUpPage,
   Verify,
 } from "../pages";
 import { Home } from "../pages/home/home.page";
@@ -37,6 +38,10 @@ export const routerConfig = createBrowserRouter([
       {
         path: "/job-detail/:id",
         element: <JobDetails />,
+      },
+      {
+        path: "/signup",
+        element: <SignUpPage />,
       },
     ],
   },

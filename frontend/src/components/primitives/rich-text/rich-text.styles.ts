@@ -5,7 +5,7 @@ export const StyledDiv = styled.div`
   flex-direction: column;
   /* height: 150px; */
   label {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #21293c;
     font-weight: 600;
   }
