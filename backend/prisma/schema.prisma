@@ -29,7 +29,9 @@ model Jobs {
   companyName    String
   location       String
   experience     String
-  postedOn       DateTime
+  postedOn       DateTime @default(now())
   jobDescription String
   salaryRange    String
+  email          String
+  website        String
 }
