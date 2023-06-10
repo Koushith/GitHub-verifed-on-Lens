@@ -13,6 +13,7 @@ export const getAllJobListings = async (req: Request, res: Response) => {
       res.status(400).json({
         message: "No listings found. create one",
       });
+      return;
     }
 
     res.status(200).json({
@@ -76,6 +77,18 @@ export const newJoblisting = async (req: Request, res: Response) => {
         salaryRange,
         postedOn: new Date(),
       },
+    });
+
+    if (!jobpost) {
+      res.status(400).json({
+        message: "something went wrong while creating new job",
+      });
+      return;
+    }
+
+    res.status(201).json({
+      message: "Success, job posted successfully",
+      jobpost,
     });
   } catch (error) {
     res.status(500).json({
