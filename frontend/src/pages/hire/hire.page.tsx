@@ -12,20 +12,20 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  company: "",
-  shortDescription: "",
+  position: "",
+  companyName: "",
   email: "",
-  dealDetails: "",
-  redeemDetails: "",
-  dealType: "",
   website: "",
+  location: "",
+  experienceRequired: "",
+  jobDescription: "",
+  salaryRange: "",
 };
 
-export const HirePage = () => {
+export const NewJobListingPage = () => {
   const [formData, setFormData] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
-  const [dealDetails, setDealDetails] = useState("");
-  const [redeemDetails, setRedeemDetails] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
 
   const navigate = useNavigate();
 
@@ -36,30 +36,6 @@ export const HirePage = () => {
   const submitHandler = async () => {
     try {
       setIsLoading(true);
-      const toastId = toast.success("Submitting Deal!!");
-      const res = await axios.post(
-        `https://ycdeals.onrender.com/deals/submit-deal`,
-        {
-          companyName: formData.company,
-          shortDescription: formData.shortDescription,
-          email: formData.email,
-          dealsDetails: dealDetails,
-          redeemDetails: redeemDetails,
-          dealType: formData.dealType,
-          website: formData.website,
-        }
-      );
-
-      if (res.status === 201) {
-        toast.success("Deal Submitted Successfully!!");
-        setDealDetails("");
-        setRedeemDetails("");
-        setFormData(initialState);
-        setIsLoading(false);
-        navigate("/");
-      }
-
-      toast.dismiss(toastId);
     } catch (error) {
       console.log("something went wrong", error);
       toast.error("Something went wrong while creating a deal");
@@ -69,7 +45,7 @@ export const HirePage = () => {
   return (
     <SubmitDealContainer>
       {/* <GoBack /> */}
-      <h2 className="heading">Submit Deal</h2>
+      <h2 className="heading">New Job Listing</h2>
 
       <Toaster
         containerClassName="toast"
@@ -82,9 +58,16 @@ export const HirePage = () => {
       <FormContainer>
         <div className="basic">
           <Input
+            label="Position"
+            placeholder="Senior Frontend Engineer"
+            name="position"
+            value={formData.position}
+            onChange={formChangeHandler}
+          />
+          <Input
             label="Company Name"
             name="company"
-            value={formData.company}
+            value={formData.companyName}
             placeholder="Enter Company Name"
             onChange={formChangeHandler}
           />
@@ -102,49 +85,44 @@ export const HirePage = () => {
             value={formData.website}
             onChange={formChangeHandler}
           />
+          <Input
+            label="Location"
+            placeholder="Remote"
+            name="location"
+            value={formData.location}
+            onChange={formChangeHandler}
+          />
+
+          <Input
+            label="Expreience Required"
+            placeholder="2-4 years"
+            name="experienceRequired"
+            value={formData.experienceRequired}
+            onChange={formChangeHandler}
+          />
         </div>
 
         <div className="deal-info">
-          <Input
-            label="Short Description About Deal"
-            placeholder="Free credits upto $200 for ..."
-            name="shortDescription"
-            value={formData.shortDescription}
-            onChange={formChangeHandler}
-          />
           <div>
             <RichTextEditor
-              label="Deal Details"
-              value={dealDetails}
-              onChange={setDealDetails}
+              label="Job Description"
+              value={jobDescription}
+              onChange={setJobDescription}
             />
             <p className="deal-helper-text">
-              Please explain which product(s) the deal is for and precisely what
-              is being offered e.g. 50% discount, 6 months free.
+              Please be Specific about the requirements and skills required
             </p>
           </div>
 
           <div>
-            <RichTextEditor
-              label="Redeem Details"
-              value={redeemDetails}
-              onChange={setRedeemDetails}
+            <Input
+              label="Salary Range "
+              name="salaryRange"
+              value={formData.salaryRange}
+              placeholder="16-20LPA"
+              onChange={formChangeHandler}
             />
-            <p className="deal-helper-text">
-              Clear redemption details are crucial. You can link to a list of
-              credit codes, provide a promo code or give the details for
-              emailing someone.
-            </p>
           </div>
-
-          <Input
-            type="text"
-            label="Deal Type"
-            placeholder="Promotion"
-            name="dealType"
-            value={formData.dealType}
-            onChange={formChangeHandler}
-          />
         </div>
 
         <Button

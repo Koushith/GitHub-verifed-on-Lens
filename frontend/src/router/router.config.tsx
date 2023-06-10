@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import {
-  HirePage,
   JobDetails,
   JobListing,
+  NewJobListingPage,
   ProfilePage,
   SignUpPage,
   Verify,
@@ -29,7 +29,7 @@ export const routerConfig = createBrowserRouter([
       },
       {
         path: "/hire",
-        element: <HirePage />,
+        element: <JobListing />,
       },
       {
         path: "/job-listings",
@@ -38,6 +38,10 @@ export const routerConfig = createBrowserRouter([
       {
         path: "/job-detail/:id",
         element: <JobDetails />,
+      },
+      {
+        path: "/new-job-listing",
+        element: <NewJobListingPage />,
       },
       {
         path: "/signup",

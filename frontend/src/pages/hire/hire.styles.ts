@@ -6,10 +6,10 @@ export const SubmitDealContainer = styled.section`
   margin: 4rem auto;
   padding: 1rem;
   .heading {
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 600;
     line-height: 3.2rem;
-    color: #21293c;
+    color: #212121;
     margin-top: 1rem;
   }
 `;

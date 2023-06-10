@@ -9,7 +9,8 @@
     "studio": "npx prisma studio",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
+    "dev": "nodemon --watch dist --exec \"node dist/index.js\"",
+    "watch": "node dist/index.js"
   },
   "keywords": [],
   "author": "koushith",
@@ -23,6 +24,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "nodemon": "^2.0.22",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

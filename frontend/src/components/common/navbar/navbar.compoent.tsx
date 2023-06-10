@@ -8,6 +8,10 @@ import { useState } from "react";
 
 import { styled } from "styled-components";
 import { phones, tablets } from "../../../utils";
+import { useDispatch, useSelector } from "react-redux";
+import { LensClient, development } from "@lens-protocol/client";
+import { telosTestnet } from "wagmi/chains";
+import MetaMaskSDK from "@metamask/sdk";
 
 export const NavbarContainer = styled.div`
   background-color: #fffefe;
@@ -98,6 +102,30 @@ export const NavbarContainer = styled.div`
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const { isElegible, lensHandle } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const authendicate = async () => {
+    try {
+      const lensClient = new LensClient({
+        environment: development,
+      });
+
+      const MMSDK = MetaMaskSDK();
+
+      const etherium = MMSDK;
+
+      const wallet = "get wallet frm mm and replace the hardcoded value";
+      const address = "0x9ccCA0a968A9bc5916E0de43Ea2D68321655ae67";
+      const challange = await lensClient.authentication.generateChallenge(
+        address
+      );
+      const signature = await lensClient.authentication.authenticate();
+    } catch (error) {
+      console.log("auth error", error);
+    }
+  };
+
   return (
     <NavbarContainer>
       <nav>

@@ -7,13 +7,7 @@ import {
   VerifyContainer,
 } from "./auth.styles";
 
-import toast, { Toaster } from "react-hot-toast";
-
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { keyframes, styled } from "styled-components";
 
 export const SignUpPage = () => {
   return (

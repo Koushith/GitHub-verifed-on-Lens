@@ -31,4 +31,5 @@ model Jobs {
   experience     String
   postedOn       DateTime
   jobDescription String
+  salaryRange    String
 }
