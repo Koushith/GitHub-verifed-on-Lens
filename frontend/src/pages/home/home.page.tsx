@@ -9,9 +9,11 @@ import Check from "../../assets/icons/check.svg";
 import { ProfileCard } from "../../components";
 
 export const Home = () => {
-  const { data: profiles } = useExploreProfiles({
-    limit: 50,
-  });
+  // const { data: profiles } = useExploreProfiles({
+  //   limit: 50,
+  // });
+
+  const profiles: any[] = [];
 
   console.log("profiles", profiles);
   return (

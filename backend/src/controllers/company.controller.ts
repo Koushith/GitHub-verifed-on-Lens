@@ -65,6 +65,8 @@ export const newJoblisting = async (req: Request, res: Response) => {
       salaryRange,
     } = req.body;
 
+    console.log("bodyyyyyy", req.body);
+
     const jobpost = await prisma.jobs.create({
       data: {
         position,

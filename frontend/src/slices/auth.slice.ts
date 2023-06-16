@@ -10,8 +10,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     authendicate: (state, action) => {},
+    setAuthState: (state, action) => {
+      state.lensHandle = action.payload;
+    },
   },
 });
 
 export const authReducer = authSlice.reducer;
-export const { authendicate } = authSlice.actions;
+export const { authendicate, setAuthState } = authSlice.actions;

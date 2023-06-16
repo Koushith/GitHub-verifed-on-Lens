@@ -2,14 +2,24 @@
 //@ts-nocheck
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { useState } from "react";
+import { useWalletLogin, useWalletLogout } from "@lens-protocol/react-web";
+import { useState, useEffect } from "react";
 // import Bars from "../../../assets/icons/bars.svg";
 // import Close from "../../../assets/icons/close.svg";
-
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { useActiveWallet } from "@lens-protocol/react-web";
 import { styled } from "styled-components";
 import { phones, tablets } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
-import { LensClient, development } from "@lens-protocol/client";
+import { setAuthState } from "../../../slices/auth.slice";
+import {
+  Environment,
+  LensClient,
+  ProfileFragment,
+  development,
+  production,
+} from "@lens-protocol/client";
 import { telosTestnet } from "wagmi/chains";
 import MetaMaskSDK from "@metamask/sdk";
 
@@ -104,25 +114,64 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const { isElegible, lensHandle } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [lensProfile, setLensProfile] = useState<ProfileFragment>();
+  const [isAuthendicated, setIsAuthendicated] = useState(false);
 
-  const authendicate = async () => {
+  const authenticate = async () => {
     try {
       const lensClient = new LensClient({
-        environment: development,
+        environment: production,
       });
 
-      const MMSDK = MetaMaskSDK();
+      const MMSDK = new MetaMaskSDK();
 
-      const etherium = MMSDK;
+      const ethereum = MMSDK.getProvider();
 
-      const wallet = "get wallet frm mm and replace the hardcoded value";
-      const address = "0x9ccCA0a968A9bc5916E0de43Ea2D68321655ae67";
-      const challange = await lensClient.authentication.generateChallenge(
-        address
-      );
-      const signature = await lensClient.authentication.authenticate();
+      const wallet = await ethereum.request({
+        method: "eth_requestAccounts",
+        params: [],
+      });
+
+      const address = wallet[0];
+      console.log("address", address);
+
+      let isAuthenticated = await lensClient.authentication.isAuthenticated();
+      console.log("isAuthendicated", isAuthenticated);
+
+      if (!isAuthenticated) {
+        console.log("insiode if block");
+        const challenge = await lensClient.authentication.generateChallenge(
+          address
+        );
+        console.log(challenge);
+        const sign = await ethereum.request({
+          method: "personal_sign",
+          params: [address, challenge],
+          id: 1,
+        });
+        console.log(sign);
+        await lensClient.authentication.authenticate(address, sign);
+      }
+
+      isAuthenticated = await lensClient.authentication.isAuthenticated();
+      console.log(isAuthenticated);
+
+      if (isAuthenticated) {
+        const allOwnedProfiles = await lensClient.profile.fetchAll({
+          ownedBy: address,
+        });
+
+        console.log("all ownered profile", allOwnedProfiles.items);
+        allOwnedProfiles.items.forEach((i) => {
+          dispatch(setAuthState(i));
+        });
+
+        setIsAuthendicated(true);
+      }
+      setIsLoading(false);
     } catch (error) {
-      console.log("auth error", error);
+      console.log("auth error", error.message);
     }
   };
 
@@ -136,9 +185,15 @@ export const Navbar = () => {
           <li>
             <NavLink to="/verify"> Get Verified</NavLink>
             <NavLink to="/job-listings"> Job Listings</NavLink>
-            <NavLink to="/about">Profile</NavLink>
+            <NavLink to="/profile">Profile</NavLink>
 
-            <button onClick={() => navigate("/signup")}>Login</button>
+            {isAuthendicated ? (
+              <>
+                <span>{lensHandle?.handle}</span>{" "}
+              </>
+            ) : (
+              <button onClick={authenticate}>Login</button>
+            )}
           </li>
         </ul>
         {/* mobile-nav */}

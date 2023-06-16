@@ -1,63 +1,45 @@
-import { useProfile, usePublications, Profile } from "@lens-protocol/react-web";
+import {
+  useProfile,
+  usePublications,
+  Profile,
+  useActiveProfile,
+  useProfilesOwnedByMe,
+  useActiveProfileSwitch,
+} from "@lens-protocol/react-web";
 import { formatPicture } from "../../utils/picture.util";
 import { useLocation, useParams } from "react-router-dom";
 import { Container } from "../../components/common";
 import { CheckIcon } from "../../components";
 import { ProfileImageContainer, ProjectsContainer } from "./profile.styles";
+import { useSelector } from "react-redux";
 
 export const ProfilePage = () => {
-  const { pathname } = useLocation();
-
-  console.log("pathname", pathname);
-
-  const handle = pathname?.split("/")[2];
-
   // let { data: profile, loading } = useProfile({ handle });
+  const { isElegible, lensHandle } = useSelector((state: any) => state.auth);
 
   // if (loading) return <p className="p-14">Loading ...</p>;
+
   return (
     <Container>
-      {/* <h1>This is a profile page</h1>
-
-      {profile?.picture?.__typename === "MediaSet" && (
-        <img
-          width="200"
-          height="200"
-          alt={profile.handle}
-          className="rounded-xl"
-          src={formatPicture(profile.picture)}
-        />
-      )}
-
-      <h1 className="text-3xl my-3">{profile?.handle}</h1>
-      <h3 className="text-xl mb-4">{profile?.bio}</h3> */}
-
       <div>
         {/* profile-meta */}
 
         <ProfileImageContainer className="profile-meta">
           {/* <h1>Profile</h1> */}
           <div className="profile-image">
-            <img
-              src="https://lh3.googleusercontent.com/a/AGNmyxbOVC6bhUvu7HscLQLKMfnm2aRd-VZX-PHMF3jB=s96-c"
-              alt="image"
-            />
+            <img src={formatPicture(lensHandle?.picture)} alt="image" />
             <CheckIcon className="check-icon" />
           </div>
 
           <div className="profile-meta">
-            <p className="name">Koushith</p>
-            <p className="bio">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Praesentium asperiores, deserunt earum ipsam perferendis excepturi
-              distinctio veniam neque temporibus nesciunt.
-            </p>
+            <p className="name">{lensHandle?.handle}</p>
+            <p className="bio">{lensHandle?.bio}</p>
             <div className="follow-info">
               <div className="count">
-                <span>20</span> Followers
+                <span>{lensHandle.stats?.totalFollowers}</span> Followers
               </div>
               <div className="count">
-                <span>20</span> following
+                <span>{lensHandle.stats?.totalFollowing}</span> following
               </div>
             </div>
           </div>

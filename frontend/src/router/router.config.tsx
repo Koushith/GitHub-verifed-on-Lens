@@ -24,7 +24,7 @@ export const routerConfig = createBrowserRouter([
         element: <Verify />,
       },
       {
-        path: "/profile/:id",
+        path: "/profile/",
         element: <ProfilePage />,
       },
       {

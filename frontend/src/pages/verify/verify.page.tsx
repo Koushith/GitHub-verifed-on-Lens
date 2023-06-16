@@ -14,20 +14,35 @@ import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { keyframes, styled } from "styled-components";
+import { useSelector } from "react-redux";
 
 export const Verify = () => {
+  const { isElegible, lensHandle } = useSelector((state: any) => state.auth);
+  const [formData, setFormData] = useState({
+    email: "",
+    repo: "",
+  });
+
+  const handleFormData = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = () => {
+    console.log(formData);
+  };
   return (
     <Container>
       <VerifyContainer>
         <div className="left">
           <>
-            {/* <div className="form-container">
+            <div className="form-container">
               <h1 className="title">Get your verified Tick mark</h1>
               <div className="form-group">
                 <Input
                   placeholder="Your Lens Id- it will be autofilled"
-                  value={"Lens ID"}
+                  value={lensHandle?.handle}
                   required
+
                   //   onChange={(e: any) => setEmail(e.target.value)}
                 />
               </div>
@@ -35,17 +50,20 @@ export const Verify = () => {
               <div className="form-group">
                 <Input
                   placeholder="Enter your Email"
-                  value={"email"}
+                  name="email"
+                  value={formData.email}
                   required
-                  //   onChange={(e: any) => setEmail(e.target.value)}
+                  onChange={handleFormData}
                 />
               </div>
 
               <div className="form-group">
                 <Input
                   placeholder="Enter the GitHub repo link"
-                  value={"repo"}
+                  name="repo"
+                  value={formData.repo}
                   required
+                  onChange={handleFormData}
                   //   onChange={(e: any) => setEmail(e.target.value)}
                 />
               </div>
@@ -53,12 +71,12 @@ export const Verify = () => {
               <Button
                 label="Prove"
                 style={{ width: "100%" }}
-                //   onClick={submitHandler}
+                onClick={submitHandler}
                 className="prove-button"
               />
-            </div> */}
+            </div>
 
-            <QRCode />
+            {/* <QRCode /> */}
           </>
         </div>
 
