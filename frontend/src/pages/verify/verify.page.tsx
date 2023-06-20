@@ -23,60 +23,102 @@ export const Verify = () => {
     repo: "",
   });
 
+  const [status, setStatus] = useState("");
+  const [callbackId, setCallbackId] = useState("");
+  const [templateurl, setTemplateUrl] = useState("");
+  const navigate = useNavigate();
+
+  const BACKEND_BASE_URL = import.meta.env.VITE_APP_BACKEND_BASE_URL;
+
   const handleFormData = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     console.log(formData);
+
+    try {
+      const { data } = await axios.post(`${BACKEND_BASE_URL}/verify/init`, {
+        email: formData.email,
+        repoFullName: formData.repo,
+      });
+      console.log("res", data);
+      setCallbackId(data?.callbackId);
+      setTemplateUrl(data?.templateUrl);
+    } catch (err) {
+      console.log("some error occured");
+    }
   };
+  console.log(callbackId, templateurl);
+
+  const getStatus = async () => {
+    try {
+      const res = await axios.get(`${BACKEND_BASE_URL}/status/${callbackId}`);
+      console.log(res.data.status);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      getStatus();
+    }, 3000);
+
+    return () => clearTimeout(id);
+  }, [callbackId]);
+
   return (
     <Container>
       <VerifyContainer>
         <div className="left">
           <>
-            <div className="form-container">
-              <h1 className="title">Get your verified Tick mark</h1>
-              <div className="form-group">
-                <Input
-                  placeholder="Your Lens Id- it will be autofilled"
-                  value={lensHandle?.handle}
-                  required
+            {!callbackId && !templateurl ? (
+              <>
+                <div className="form-container">
+                  <h1 className="title">Get your verified Tick mark</h1>
+                  <div className="form-group">
+                    <Input
+                      placeholder="Your Lens Id- it will be autofilled"
+                      value={lensHandle?.handle}
+                      required
 
-                  //   onChange={(e: any) => setEmail(e.target.value)}
-                />
-              </div>
+                      //   onChange={(e: any) => setEmail(e.target.value)}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <Input
-                  placeholder="Enter your Email"
-                  name="email"
-                  value={formData.email}
-                  required
-                  onChange={handleFormData}
-                />
-              </div>
+                  <div className="form-group">
+                    <Input
+                      placeholder="Enter your Email"
+                      name="email"
+                      value={formData.email}
+                      required
+                      onChange={handleFormData}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <Input
-                  placeholder="Enter the GitHub repo link"
-                  name="repo"
-                  value={formData.repo}
-                  required
-                  onChange={handleFormData}
-                  //   onChange={(e: any) => setEmail(e.target.value)}
-                />
-              </div>
+                  <div className="form-group">
+                    <Input
+                      placeholder="Enter the GitHub repo link"
+                      name="repo"
+                      value={formData.repo}
+                      required
+                      onChange={handleFormData}
+                      //   onChange={(e: any) => setEmail(e.target.value)}
+                    />
+                  </div>
 
-              <Button
-                label="Prove"
-                style={{ width: "100%" }}
-                onClick={submitHandler}
-                className="prove-button"
-              />
-            </div>
-
-            {/* <QRCode /> */}
+                  <Button
+                    label="Prove"
+                    style={{ width: "100%" }}
+                    onClick={submitHandler}
+                    className="prove-button"
+                  />
+                </div>
+              </>
+            ) : (
+              <QRCode appUrl={templateurl} />
+            )}
           </>
         </div>
 

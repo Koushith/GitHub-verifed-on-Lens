@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useWalletLogin, useWalletLogout } from "@lens-protocol/react-web";
@@ -117,6 +115,7 @@ export const Navbar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [lensProfile, setLensProfile] = useState<ProfileFragment>();
   const [isAuthendicated, setIsAuthendicated] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const authenticate = async () => {
     try {
@@ -128,7 +127,7 @@ export const Navbar = () => {
 
       const ethereum = MMSDK.getProvider();
 
-      const wallet = await ethereum.request({
+      const wallet = await ethereum?.request({
         method: "eth_requestAccounts",
         params: [],
       });
@@ -145,13 +144,12 @@ export const Navbar = () => {
           address
         );
         console.log(challenge);
-        const sign = await ethereum.request({
+        const sign = await ethereum?.request({
           method: "personal_sign",
           params: [address, challenge],
-          id: 1,
         });
         console.log(sign);
-        await lensClient.authentication.authenticate(address, sign);
+        await lensClient.authentication.authenticate(address, String(sign));
       }
 
       isAuthenticated = await lensClient.authentication.isAuthenticated();
@@ -170,7 +168,7 @@ export const Navbar = () => {
         setIsAuthendicated(true);
       }
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.log("auth error", error.message);
     }
   };
@@ -198,7 +196,7 @@ export const Navbar = () => {
         </ul>
         {/* mobile-nav */}
 
-        {open ? (
+        {isOpen ? (
           <div className="mobile-nav">
             {/* {" "}
             <img src={Close} alt="close" /> */}

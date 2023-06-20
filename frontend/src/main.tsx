@@ -16,6 +16,7 @@ import { RouterProvider } from "react-router-dom";
 import { routerConfig } from "./router/router.config.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
+import { production } from "@lens-protocol/client";
 
 const authenticate = async () => {};
 

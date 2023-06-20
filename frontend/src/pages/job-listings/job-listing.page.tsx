@@ -19,7 +19,7 @@ export const JobListing = () => {
   if (isLoading) return <div>loading...</div>;
   return (
     <JobListingContainer>
-      {/* Joh listing
+      Joh listing
       <button onClick={() => navigate("/new-job-listing")}>
         Add New Listing
       </button>
@@ -28,9 +28,7 @@ export const JobListing = () => {
           <h1>{job?.position}</h1>
           <h1>{job?.companyName}</h1>
         </>
-
-      ))} */}
-
+      ))}
       <div>
         <div className="logo"></div>
         <div>
