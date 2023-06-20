@@ -175,6 +175,7 @@ export const Navbar = () => {
         if (allOwnedProfiles.items?.length <= 0) {
           console.log("actions were here");
           //show a toast that user is not eligible
+          alert("your wallet adress is not shortlisted");
         } else {
           console.log("code was here------------");
           const request = await axios.post(
@@ -190,7 +191,13 @@ export const Navbar = () => {
 
           console.log("status------", request);
 
-          dispatch(setAuthState(allOwnedProfiles.items[0]));
+          if (request.status === 200) {
+            alert("user already exists");
+            dispatch(setAuthState(request.data.user));
+          }
+          if (request.status === 201) {
+            dispatch(setAuthState(request.data.user));
+          }
         }
       }
     } catch (error: any) {
@@ -251,7 +258,7 @@ export const Navbar = () => {
                       ></path>
                     </svg>{" "}
                   </span>
-                  {lensProfile?.handle}
+                  {lensProfile?.lensHandle}
                 </button>{" "}
               </>
             ) : (

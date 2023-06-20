@@ -351,6 +351,7 @@ export const responseFromReclaimWallet = async (
     </html>`);
       return;
     }
+    //todo- fetch user table and update-> we are storing email aswell. use .lens handle as ref and update it
 
     await prisma.gitLinks.update({
       where: {

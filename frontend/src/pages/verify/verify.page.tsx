@@ -17,7 +17,7 @@ import { keyframes, styled } from "styled-components";
 import { useSelector } from "react-redux";
 
 export const Verify = () => {
-  const { isElegible, lensHandle } = useSelector((state: any) => state.auth);
+  const { isElegible, lensProfile } = useSelector((state: any) => state.auth);
   const [formData, setFormData] = useState({
     email: "",
     repo: "",
@@ -80,7 +80,7 @@ export const Verify = () => {
                   <div className="form-group">
                     <Input
                       placeholder="Your Lens Id- it will be autofilled"
-                      value={lensHandle?.handle}
+                      value={lensProfile?.lensHandle}
                       required
 
                       //   onChange={(e: any) => setEmail(e.target.value)}
