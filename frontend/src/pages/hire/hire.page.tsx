@@ -10,6 +10,7 @@ import {
 } from "../../components/primitives";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_BASE_URL } from "../../utils/constants";
 
 const initialState = {
   position: "",
@@ -36,9 +37,26 @@ export const NewJobListingPage = () => {
   const submitHandler = async () => {
     try {
       setIsLoading(true);
+      const res = await axios.post(`${BACKEND_BASE_URL}/company/job`, {
+        position: formData.position,
+        companyName: formData.companyName,
+        email: formData.email,
+        website: formData.website,
+        location: formData.location,
+        experienceRequired: formData.experienceRequired,
+        jobDescription: jobDescription,
+        salaryRange: formData.salaryRange,
+      });
+      console.log(res);
+
+      if (res.status == 201) {
+        navigate("/job-listings");
+      }
     } catch (error) {
       console.log("something went wrong", error);
       toast.error("Something went wrong while creating a deal");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,7 +84,7 @@ export const NewJobListingPage = () => {
           />
           <Input
             label="Company Name"
-            name="company"
+            name="companyName"
             value={formData.companyName}
             placeholder="Enter Company Name"
             onChange={formChangeHandler}
