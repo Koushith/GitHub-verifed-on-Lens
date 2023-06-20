@@ -20,6 +20,7 @@ import {
 } from "@lens-protocol/client";
 import { telosTestnet } from "wagmi/chains";
 import MetaMaskSDK from "@metamask/sdk";
+import { BACKEND_BASE_URL } from "../../../utils/constants";
 
 export const NavbarContainer = styled.div`
   background-color: #fffefe;
@@ -175,7 +176,19 @@ export const Navbar = () => {
           console.log("actions were here");
           //show a toast that user is not eligible
         } else {
-          const request = await axios;
+          console.log("code was here------------");
+          const request = await axios.post(
+            `${BACKEND_BASE_URL}/user/register`,
+            {
+              lensProfile: allOwnedProfiles.items[0],
+            }
+          );
+          // await lensClient.profile.addInterests({
+          //   interests: ["test"],
+          //   profileId: "0x01cc47",
+          // });
+
+          console.log("status------", request);
 
           dispatch(setAuthState(allOwnedProfiles.items[0]));
         }

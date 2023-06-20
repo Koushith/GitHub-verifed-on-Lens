@@ -11,6 +11,7 @@ import {
   initSession,
   responseFromReclaimWallet,
 } from "./controllers/reclaim.component.js";
+import { getAllUser, registerUser } from "./controllers/user.controller.js";
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,10 @@ app.post("/callback/:callbackId", responseFromReclaimWallet);
 app.get("/company/job", getAllJobListings);
 app.get("/company/job/:id", getSingleJob);
 app.post("/company/job", newJoblisting);
+
+//user
+app.post("/user/register", registerUser);
+app.get("/user", getAllUser);
 
 app.get("/", (req, res) => {
   res.send("This route works!!");
