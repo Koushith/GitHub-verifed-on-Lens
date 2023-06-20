@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import { useWalletLogin, useWalletLogout } from "@lens-protocol/react-web";
 import { useState, useEffect } from "react";
 // import Bars from "../../../assets/icons/bars.svg";
@@ -120,11 +120,11 @@ export const NavbarContainer = styled.div`
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const { isElegible, lensHandle } = useSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
+  const { isElegible, lensHandle, authendicate, lensProfile, isAuthendicated } =
+    useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [lensProfile, setLensProfile] = useState<ProfileFragment>();
-  const [isAuthendicated, setIsAuthendicated] = useState(false);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const authenticate = async () => {
@@ -136,6 +136,7 @@ export const Navbar = () => {
       const MMSDK = new MetaMaskSDK();
       const ethereum = MMSDK.getProvider();
 
+      setIsLoading(true);
       const wallet = await ethereum?.request({
         method: "eth_requestAccounts",
         params: [],
@@ -170,15 +171,19 @@ export const Navbar = () => {
         });
 
         console.log("all ownered profile", allOwnedProfiles.items);
-        allOwnedProfiles.items.forEach((i) => {
-          dispatch(setAuthState(i));
-        });
+        if (allOwnedProfiles.items?.length <= 0) {
+          console.log("actions were here");
+          //show a toast that user is not eligible
+        } else {
+          const request = await axios;
 
-        setIsAuthendicated(true);
+          dispatch(setAuthState(allOwnedProfiles.items[0]));
+        }
       }
-      setIsLoading(false);
     } catch (error: any) {
       console.log("auth error", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -233,7 +238,7 @@ export const Navbar = () => {
                       ></path>
                     </svg>{" "}
                   </span>
-                  {lensHandle?.handle}
+                  {lensProfile?.handle}
                 </button>{" "}
               </>
             ) : (

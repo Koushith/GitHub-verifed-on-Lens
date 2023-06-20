@@ -49,15 +49,16 @@ model pgmigrations {
 }
 
 model GitLinks {
-  id           Int       @id @default(autoincrement())
-  email        String    @db.VarChar(30)
-  repo         String    @db.VarChar(50)
-  isVerified   Boolean
-  callback_id  String    @db.VarChar(1000)
-  proofs       String?
-  status       Status
-  template_id  String    @db.VarChar(200)
-  template_url String    @db.Text
-  created_at   DateTime  @default(now())
-  updated_at   DateTime? @updatedAt
+  id             Int       @id @default(autoincrement())
+  email          String    @db.VarChar(30)
+  repo           String    @db.VarChar(50)
+  isVerified     Boolean
+  callback_id    String    @db.VarChar(1000)
+  proofs         String?
+  status         Status
+  template_id    String    @db.VarChar(200)
+  template_url   String    @db.Text
+  created_at     DateTime  @default(now())
+  updated_at     DateTime? @updatedAt
+  requiredSkills String?   @db.VarChar(1000)
 }

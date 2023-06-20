@@ -2,16 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isEligible: false,
-  lensHandle: {},
+  lensProfile: {},
+  isAuthendicated: false,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    authendicate: (state, action) => {},
+    authendicate: (state, action) => {
+      console.log("action firing while no account", action);
+      state.isEligible = action.payload;
+    },
     setAuthState: (state, action) => {
-      state.lensHandle = action.payload;
+      state.lensProfile = action.payload;
+      state.isAuthendicated = true;
+      state.isEligible = true;
     },
   },
 });
