@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 import { useWalletLogin, useWalletLogout } from "@lens-protocol/react-web";
 import { useState, useEffect } from "react";
 // import Bars from "../../../assets/icons/bars.svg";
@@ -144,10 +145,8 @@ export const Navbar = () => {
       });
 
       const address = wallet[0];
-      console.log("address", address);
 
       let isAuthenticated = await lensClient.authentication.isAuthenticated();
-      console.log("isAuthendicated", isAuthenticated);
 
       if (!isAuthenticated) {
         console.log("insiode if block");
@@ -164,7 +163,6 @@ export const Navbar = () => {
       }
 
       isAuthenticated = await lensClient.authentication.isAuthenticated();
-      console.log(isAuthenticated);
 
       if (isAuthenticated) {
         const allOwnedProfiles = await lensClient.profile.fetchAll({
@@ -173,9 +171,9 @@ export const Navbar = () => {
 
         console.log("all ownered profile", allOwnedProfiles.items);
         if (allOwnedProfiles.items?.length <= 0) {
-          console.log("actions were here");
-          //show a toast that user is not eligible
-          alert("your wallet adress is not shortlisted");
+          toast.error(
+            "You dont own any lens profile. please switch the wallet and try again!!"
+          );
         } else {
           console.log("code was here------------");
           const request = await axios.post(
@@ -184,23 +182,15 @@ export const Navbar = () => {
               lensProfile: allOwnedProfiles.items[0],
             }
           );
-          // await lensClient.profile.addInterests({
-          //   interests: ["test"],
-          //   profileId: "0x01cc47",
-          // });
 
-          console.log("status------", request);
-
-          if (request.status === 200) {
-            alert("user already exists");
-            dispatch(setAuthState(request.data.user));
-          }
-          if (request.status === 201) {
+          if (request.status === 200 || request.status === 201) {
+            toast.success("Signing in success!!");
             dispatch(setAuthState(request.data.user));
           }
         }
       }
     } catch (error: any) {
+      toast.error("Something went wrong...");
       console.log("auth error", error.message);
     } finally {
       setIsLoading(false);
@@ -209,6 +199,14 @@ export const Navbar = () => {
 
   return (
     <NavbarContainer>
+      <Toaster
+        containerClassName="toast"
+        toastOptions={{
+          style: {
+            fontSize: "16px",
+          },
+        }}
+      />
       <nav>
         <NavLink className="logo" to="/">
           GIT VERIFIED

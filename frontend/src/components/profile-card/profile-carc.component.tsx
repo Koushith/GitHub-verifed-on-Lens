@@ -77,7 +77,7 @@ export const ProfileCard = ({ profile }: any) => {
   console.log("rest---", profile);
   const navigate = useNavigate();
   return (
-    <ProfileCardContainer onClick={() => navigate(`/profile/{}`)}>
+    <ProfileCardContainer onClick={() => navigate(`/profile/${profile?.id}`)}>
       <div className="meta">
         <div className="profile-image">
           {profile?.picture && profile?.picture.__typename === "MediaSet" ? (

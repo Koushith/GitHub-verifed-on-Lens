@@ -5,7 +5,8 @@ import {
   JobListing,
   NewJobListingPage,
   ProfilePage,
-  SignUpPage,
+  SignupPage,
+  UserProfilePage,
   Verify,
 } from "../pages";
 import { Home } from "../pages/home/home.page";
@@ -26,6 +27,12 @@ export const routerConfig = createBrowserRouter([
       {
         path: "/profile/",
         element: <ProfilePage />,
+        errorElement: <h1>Somethin went wrong</h1>,
+      },
+      {
+        path: "/profile/:id",
+        element: <UserProfilePage />,
+        errorElement: <h1>Somethin went wrong</h1>,
       },
       {
         path: "/hire",
@@ -45,7 +52,7 @@ export const routerConfig = createBrowserRouter([
       },
       {
         path: "/signup",
-        element: <SignUpPage />,
+        element: <SignupPage />,
       },
     ],
   },

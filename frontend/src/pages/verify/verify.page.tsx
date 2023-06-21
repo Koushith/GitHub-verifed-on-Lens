@@ -15,6 +15,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { keyframes, styled } from "styled-components";
 import { useSelector } from "react-redux";
+import { extractGitHubRepoPath } from "../../utils";
 
 export const Verify = () => {
   const { isElegible, lensProfile } = useSelector((state: any) => state.auth);
@@ -36,11 +37,12 @@ export const Verify = () => {
 
   const submitHandler = async () => {
     console.log(formData);
+    console.log(extractGitHubRepoPath(formData.repo));
 
     try {
       const { data } = await axios.post(`${BACKEND_BASE_URL}/verify/init`, {
         email: formData.email,
-        repoFullName: formData.repo,
+        repoFullName: extractGitHubRepoPath(formData.repo),
       });
       console.log("res", data);
       setCallbackId(data?.callbackId);

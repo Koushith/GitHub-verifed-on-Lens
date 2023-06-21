@@ -1,45 +1,24 @@
 import { keyframes, styled } from "styled-components";
 
 export const VerifyContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10rem;
   margin-top: 15rem;
-  .left {
-    .form-container {
-      min-width: 500px;
-      padding: 2rem;
-      border-radius: 4px;
-      border: 1px solid rgb(225, 228, 232);
-      .title {
-        font-size: 2rem;
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-      .form-group {
-        margin-bottom: 1rem;
-      }
 
-      .prove-button {
-        margin-top: 1rem;
-      }
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    font-size: 3.4rem;
+    font-weight: 700;
+    line-height: 40px;
   }
 
-  .right {
-    h1 {
-      font-size: 3.4rem;
-      font-weight: 700;
-      line-height: 40px;
-    }
-
-    p {
-      font-weight: 400;
-      font-size: 1.6rem;
-      color: #4b587c;
-      margin-top: 1rem;
-    }
+  p {
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: #4b587c;
+    margin-top: 1rem;
   }
 
   .dev-list {

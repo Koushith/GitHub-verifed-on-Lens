@@ -40,6 +40,7 @@ export const ProfileImageContainer = styled.div`
       font-size: 1.6rem;
       line-height: 20px;
       color: #444d56;
+      margin-top: 1rem;
     }
 
     .follow-info {
@@ -51,10 +52,11 @@ export const ProfileImageContainer = styled.div`
         font-size: 1.6rem;
         line-height: 20px;
         color: #444d56;
+        margin-top: 1.4rem;
         span {
           color: #212121 !important;
           margin-top: 2rem;
-          display: block;
+          /* display: block; */
           font-size: 1.8rem;
           font-weight: 800;
         }

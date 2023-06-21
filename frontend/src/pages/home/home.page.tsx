@@ -7,13 +7,19 @@ import { Link, Outlet } from "react-router-dom";
 import { HomePageContainer } from "./home.styles";
 import Check from "../../assets/icons/check.svg";
 import { ProfileCard } from "../../components";
+import { useSelector } from "react-redux";
+import { SignupPage } from "..";
 
 export const Home = () => {
   const { data: profiles } = useExploreProfiles({
     limit: 50,
   });
 
-  console.log("profiles", profiles);
+  const { isAuthendicated } = useSelector((state: any) => state.auth);
+
+  if (!isAuthendicated) {
+    return <SignupPage />;
+  }
   return (
     <HomePageContainer>
       {/* <div className="p-20">
