@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "GitLinks" ALTER COLUMN "lensProfile" SET DATA TYPE VARCHAR(30);

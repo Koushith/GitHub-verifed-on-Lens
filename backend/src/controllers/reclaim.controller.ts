@@ -136,7 +136,9 @@ export const responseFromReclaimWallet = async (
   req: Request,
   res: Response
 ) => {
-  if (!req.params.id) {
+  console.log(req.params);
+  console.log("route was here");
+  if (!req.params.callbackId) {
     res.status(400).send(`400 - Bad Request: callbackId is required`);
     return;
   }
@@ -155,10 +157,11 @@ export const responseFromReclaimWallet = async (
       return;
     }
 
-    const callbackId = req.params.id;
+    const callbackId = req.params.callbackId;
     const proofs = reqBody.proofs as Proof[];
 
     console.log("proofs array", proofs);
+    console.log("callback id", callbackId);
 
     // verify the proof
     const isValidProofs = await reclaim.verifyCorrectnessOfProofs(proofs);
@@ -223,6 +226,16 @@ export const responseFromReclaimWallet = async (
     }
     console.log("record---final--", record);
     if (record.status === "VERIFIED") {
+      //find by lend id and update there aswell
+      // await prisma.user.update({
+      //   where: {
+      //     email: record.lensProfile,
+      //   },
+      //   data: {
+      //     isVerified: true,
+      //   },
+      // });
+
       res.status(400).send(`<!DOCTYPE html>
     <html>
       <head>

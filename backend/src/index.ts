@@ -25,10 +25,6 @@ app.use(express.json()); // body parser- parse JSON
 app.post("/verify/init", initSession);
 app.get("/verify/status/:id", getStatus);
 
-//React Native
-app.use(express.text({ type: "*/*" }));
-app.post("/callback/:callbackId", responseFromReclaimWallet);
-
 // Company
 app.get("/company/job", getAllJobListings);
 app.get("/company/job/:id", getSingleJob);
@@ -37,6 +33,10 @@ app.post("/company/job", newJoblisting);
 //user
 app.post("/user/register", registerUser);
 app.get("/user", getAllUser);
+
+//React Native
+app.use(express.text({ type: "*/*" }));
+app.post("/callback/:callbackId", responseFromReclaimWallet);
 
 app.get("/", (req, res) => {
   res.send("This route works!!");

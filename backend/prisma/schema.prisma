@@ -16,6 +16,7 @@ model User {
   lensHandle  String?
   wallet      String?
   lensProfile String?
+  email       String?
 }
 
 model Intrests {
