@@ -46,7 +46,6 @@ export const initSession = async (req: Request, res: Response) => {
       });
     } else {
       const callbackId = CALLBACK_PREFIX + generateUuid();
-
       const template = reclaim
         .connect(
           "Github",
