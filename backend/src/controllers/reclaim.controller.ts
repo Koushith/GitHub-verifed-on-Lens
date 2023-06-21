@@ -14,8 +14,8 @@ const prisma = new PrismaClient();
 const reclaim = new reclaimprotocol.Reclaim();
 
 export const initSession = async (req: Request, res: Response) => {
-  const { email, repoFullName } = req.body;
-  console.log("email-", email, repoFullName);
+  const { email, repoFullName, lensProfile } = req.body;
+  console.log("email-", email, repoFullName, lensProfile);
 
   const CALLBACK_URL = process.env.CALLBACK_URL! + "/" + "callback/";
   const CALLBACK_PREFIX = "gitlens-";
@@ -46,27 +46,6 @@ export const initSession = async (req: Request, res: Response) => {
       });
     } else {
       const callbackId = CALLBACK_PREFIX + generateUuid();
-
-      // const template = reclaim
-      //   .connect(
-      //     "Github",
-      //     [
-      //       {
-      //         provider: "github-commits",
-      //         payload: {
-      //           repository: "repoFullName",
-      //           type: "github-commits",
-      //           searchQuery: {
-      //             keywords: [],
-      //             qualifiers: {},
-      //           },
-      //         },
-      //         templateClaimId: reclaimprotocol.utils.generateUuid(),
-      //       },
-      //     ],
-      //     CALLBACK_URL
-      //   )
-      //   .generateTemplate(callbackId);
 
       const template = reclaim
         .connect(
@@ -101,6 +80,7 @@ export const initSession = async (req: Request, res: Response) => {
           template_url: templateUrl,
           status: "PENDING",
           isVerified: false,
+          lensProfile: lensProfile,
         },
       });
 
@@ -153,102 +133,6 @@ export const getStatus = async (req: Request, res: Response) => {
   }
 };
 
-// export const responseFromReclaimWallet = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   if (!req.params.id) {
-//     res.status(400).send(`400 - Bad Request: callbackId is required`);
-//     return;
-//   }
-
-//   if (!req.body) {
-//     res.status(400).send(`400 - Bad Request: body is required`);
-//     return;
-//   }
-//   try {
-//     let body = JSON.parse(decodeURIComponent(req.body));
-
-//     if (!body.proofs || body.proofs.length) {
-//       res.status(400).send(`400 - Bad Request: proofs are required`);
-//       return;
-//     }
-
-//     const callbackId = req.params.id;
-//     const proofs = body.proofs as Proof[];
-//     console.log("proofs---", proofs);
-
-//     //verify the proof
-
-//     const isValidProof = await reclaim.verifyCorrectnessOfProofs(proofs);
-
-//     console.log("isValid??", isValidProof);
-
-//     // if (!isValidProof) {
-//     //   await prisma.gitLinks.update({
-//     //     where: {
-//     //       call
-//     //     },
-//     //     data: {
-//     //       status: "FAILED",
-//     //     },
-//     //   });
-//     //   res.status(400).send(`Bad requests. Invalid proofs`);
-//     //   return;
-//     // }
-
-//     if (isValidProof) {
-//       const record = await prisma.gitLinks.findFirst({
-//         where: {
-//           callback_id: callbackId,
-//         },
-//       });
-
-//       if (!record) {
-//         res.status(404).send("Callback id is not found");
-//         return;
-//       }
-
-//       if (record) {
-//         await prisma.gitLinks.update({
-//           where: {
-//             id: Number(callbackId),
-//           },
-//           data: {
-//             status: "VERIFIED",
-//             proofs: JSON.stringify(proofs),
-//             isVerified: true,
-//           },
-//         });
-
-//         res.send(`<div
-// 	style="
-// 	  width: 100%;
-// 	  height: 100%;
-// 	  display: flex;
-// 	  text-align: center;
-// 	  justify-content: center;
-// 	  align-items: center;
-// 	"
-//   >
-// 	<h1>
-// 	  verified!!!
-// 	</h1>
-//   </div>`);
-//       }
-//     } else {
-//       res.status(500).json({
-//         message: "proofs are invalid",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "Something went wrong",
-//       error: error,
-//     });
-//   }
-// };
-
 export const responseFromReclaimWallet = async (
   req: Request,
   res: Response
@@ -273,12 +157,16 @@ export const responseFromReclaimWallet = async (
     }
 
     const callbackId = req.params.id;
-
     const proofs = reqBody.proofs as Proof[];
+
+    console.log("proofs array", proofs);
 
     // verify the proof
     const isValidProofs = await reclaim.verifyCorrectnessOfProofs(proofs);
 
+    console.log("is valid proof-----", isValidProofs);
+
+    //check if proof already exists
     const existingProofs = await prisma.gitLinks.findMany({
       select: {
         proofs: true,
@@ -334,7 +222,7 @@ export const responseFromReclaimWallet = async (
       res.status(404).send("Callback id not found");
       return;
     }
-
+    console.log("record---final--", record);
     if (record.status === "VERIFIED") {
       res.status(400).send(`<!DOCTYPE html>
     <html>

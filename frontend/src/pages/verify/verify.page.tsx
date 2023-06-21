@@ -38,10 +38,12 @@ export const Verify = () => {
   const submitHandler = async () => {
     console.log(formData);
     console.log(extractGitHubRepoPath(formData.repo));
+    console.log(lensProfile.lensHandle);
 
     try {
       const { data } = await axios.post(`${BACKEND_BASE_URL}/verify/init`, {
         email: formData.email,
+        lensProfile: lensProfile?.lensHandle,
         repoFullName: extractGitHubRepoPath(formData.repo),
       });
       console.log("res", data);

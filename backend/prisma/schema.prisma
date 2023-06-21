@@ -61,4 +61,5 @@ model GitLinks {
   created_at     DateTime  @default(now())
   updated_at     DateTime? @updatedAt
   requiredSkills String?   @db.VarChar(1000)
+  lensProfile    String?   @db.VarChar(10)
 }

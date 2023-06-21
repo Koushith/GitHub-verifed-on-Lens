@@ -10,7 +10,7 @@ import {
   getStatus,
   initSession,
   responseFromReclaimWallet,
-} from "./controllers/reclaim.component.js";
+} from "./controllers/reclaim.controller.js";
 import { getAllUser, registerUser } from "./controllers/user.controller.js";
 
 dotenv.config();
@@ -18,7 +18,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors());
-app.use(express.json()); // body parser- parse JSON bodies
+app.use(express.json()); // body parser- parse JSON
 
 //Reclaim
 
