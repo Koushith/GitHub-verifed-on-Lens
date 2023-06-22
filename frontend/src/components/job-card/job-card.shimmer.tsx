@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 import { tablets, phones } from "../../utils";
+import { Shimmer } from "..";
 
-export const JobCardContainer = styled.div`
+export const JobSimmerContainer = styled.div`
   padding: 1rem;
   border: 1px solid rgb(225, 228, 232);
   border-radius: 4px;
@@ -11,7 +12,7 @@ export const JobCardContainer = styled.div`
   transition: 0.3s all;
   cursor: pointer;
   .logo {
-    flex-basis: 50px;
+    flex-basis: 60px;
     img {
       border-radius: 50%;
       height: 40px;
@@ -63,9 +64,25 @@ export const JobCardContainer = styled.div`
     }
   }
 
-  &:hover {
-    background-color: rgb(246, 248, 250, 1);
-    border-color: #6fcf97;
+  .icon-sh {
+    width: 40px;
+    height: 40px;
+  }
+
+  .bio-sh {
+    width: 200px;
+    height: 10px;
+  }
+
+  .job-sh {
+    margin-top: 1rem;
+    width: 100px;
+    height: 10px;
+  }
+
+  .skills-sh {
+    width: 100px;
+    height: 10px;
   }
 
   @media (${tablets}) {
@@ -84,3 +101,24 @@ export const JobCardContainer = styled.div`
     }
   }
 `;
+
+export const JobCardShimmer = (props: any) => {
+  return (
+    <JobSimmerContainer>
+      <div className="logo">
+        <Shimmer className="icon-sh" />
+      </div>
+      <div className="job-info">
+        <h2>
+          <Shimmer className="bio-sh" />
+        </h2>
+        <div className="meta-info">
+          <Shimmer className="job-sh" />
+        </div>
+        <div className="skills">
+          <Shimmer className="skills-sh" />
+        </div>
+      </div>
+    </JobSimmerContainer>
+  );
+};

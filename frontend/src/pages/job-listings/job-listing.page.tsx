@@ -5,6 +5,7 @@ import { Container } from "../../components/common";
 import { Button, JobCard } from "../../components";
 import { SignupPage } from "..";
 import { useSelector } from "react-redux";
+import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
 
 export const JobListing = () => {
   const { isAuthendicated } = useSelector((state: any) => state.auth);
@@ -14,7 +15,7 @@ export const JobListing = () => {
   };
 
   const navigate = useNavigate();
-  const { data, isLoading, error } = useSwr(
+  const { data, error, isLoading } = useSwr(
     "http://localhost:8000/company/job",
     getAllListing
   );
@@ -29,19 +30,27 @@ export const JobListing = () => {
     return <SignupPage />;
   }
   if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+
   return (
     <Container>
       <JobListingContainer>
         <div className="job-header">
-          <h1>All Listings - 20</h1>
+          <h1>All Listings - {data?.listings?.length}</h1>
           <Button label="Add new Listing" onClick={navigateToNewListingPage} />
         </div>
-        <div className="job-lists">
-          {data?.listings?.map((job: any) => (
-            <JobCard key={job.id} job={job} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="job-lists">
+            {new Array(10).fill("").map((_, i) => (
+              <JobCardShimmer key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="job-lists">
+            {data?.listings?.map((job: any) => (
+              <JobCard key={job.id} job={job} />
+            ))}
+          </div>
+        )}
       </JobListingContainer>
     </Container>
   );

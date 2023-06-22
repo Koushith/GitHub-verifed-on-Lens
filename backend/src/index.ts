@@ -5,6 +5,7 @@ import {
   getAllJobListings,
   getSingleJob,
   newJoblisting,
+  getUserByLensId,
 } from "./controllers/company.controller.js";
 import {
   getStatus,
@@ -33,6 +34,7 @@ app.post("/company/job", newJoblisting);
 //user
 app.post("/user/register", registerUser);
 app.get("/user", getAllUser);
+app.get("/user/:id", getUserByLensId);
 
 //React Native
 app.use(express.text({ type: "*/*" }));

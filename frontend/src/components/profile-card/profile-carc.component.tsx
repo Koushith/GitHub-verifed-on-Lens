@@ -25,7 +25,7 @@ export const ProfileCardContainer = styled.div`
         height: 20px;
         width: 20px;
         left: 26px;
-        bottom: 4px;
+        bottom: 0px;
       }
     }
   }
@@ -77,24 +77,33 @@ export const ProfileCardContainer = styled.div`
 export const ProfileCard = ({ profile }: any) => {
   console.log("rest---", profile);
   const navigate = useNavigate();
+
+  const parsedProfile = JSON.parse(profile.lensProfile);
+  console.log(profile.isVerified);
   return (
-    <ProfileCardContainer onClick={() => navigate(`/profile/${profile?.id}`)}>
+    <ProfileCardContainer
+      onClick={() => navigate(`/profile/${parsedProfile?.handle}`)}
+    >
       <div className="meta">
         <div className="profile-image">
-          {profile?.picture && profile?.picture.__typename === "MediaSet" ? (
-            <img
-              src={formatPicture(profile?.picture)}
-              width="120"
-              height="120"
-              alt={profile.handle}
-            />
+          {parsedProfile?.picture &&
+          parsedProfile?.picture.__typename === "MediaSet" ? (
+            <>
+              <img
+                src={formatPicture(parsedProfile?.picture)}
+                width="120"
+                height="120"
+                alt={parsedProfile?.handle}
+              />
+              {profile?.isVerified && <CheckIcon className="check-icon" />}
+            </>
           ) : (
             <>
               <img
-                src="https://lh3.googleusercontent.com/a/AGNmyxbOVC6bhUvu7HscLQLKMfnm2aRd-VZX-PHMF3jB=s96-c"
+                src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
                 alt="image"
               />
-              <CheckIcon className="check-icon" />
+              {profile?.isVerified && <CheckIcon className="check-icon" />}
             </>
           )}
         </div>
@@ -102,9 +111,9 @@ export const ProfileCard = ({ profile }: any) => {
       </div>
 
       <div className="meta-info">
-        <p className="name">{profile?.handle}</p>
+        <p className="name">{parsedProfile?.handle}</p>
 
-        <p className="bio">{profile?.bio}</p>
+        <p className="bio">{parsedProfile?.bio}</p>
       </div>
     </ProfileCardContainer>
   );

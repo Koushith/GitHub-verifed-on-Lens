@@ -99,3 +99,22 @@ export const newJoblisting = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getUserByLensId = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const user = await prisma.user.findFirst({
+      where: {
+        lensHandle: id,
+      },
+    });
+
+    res.json({
+      message: "user found",
+      user,
+    });
+  } catch (err) {
+    res.send("no user found");
+  }
+};

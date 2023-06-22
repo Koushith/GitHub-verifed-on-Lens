@@ -264,6 +264,18 @@ export const responseFromReclaimWallet = async (
       },
     });
 
+    // update user's email
+
+    await prisma.user.updateMany({
+      where: {
+        lensHandle: record.lensProfile!,
+      },
+      data: {
+        email: record.email,
+        isVerified: true,
+      },
+    });
+
     const htmlResponse = `<!DOCTYPE html>
     <html>
       <head>

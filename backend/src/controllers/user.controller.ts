@@ -57,9 +57,14 @@ const fetchUser = async (req: Request, res: Response) => {
 
 export const getAllUser = async (req: Request, res: Response) => {
   try {
-    const user = await prisma.user.findFirst({});
+    const user = await prisma.user.findMany();
     res.status(200).json({
       user,
     });
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong,",
+      error: err,
+    });
+  }
 };
