@@ -42,13 +42,6 @@ export const JobCardContainer = styled.div`
 
       span {
         &::before {
-          /* content: "."; */
-          /* align-items: center;
-          position: absolute;
-          align-self: center;
-          align-content: center;
-          left: 0.8rem;
-          top: 2rem; */
         }
       }
     }

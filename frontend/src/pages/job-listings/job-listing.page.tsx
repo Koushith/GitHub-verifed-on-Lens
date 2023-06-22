@@ -32,29 +32,6 @@ export const JobListing = () => {
   if (isLoading) return <div>loading...</div>;
   return (
     <Container>
-      {/* Joh listing
-      <button onClick={() => navigate("/new-job-listing")}>
-        Add New Listing
-      </button>
-      {data?.listings?.map((job: any) => (
-        <>
-          <h1>{job?.position}</h1>
-          <h1>{job?.companyName}</h1>
-        </>
-      ))}
-      <div>
-        <div className="logo"></div>
-        <div>
-          <h3>
-            Software Engineer- Frontend <span>at QustBook</span>
-          </h3>
-          <div>
-            <p>Hybrid</p>
-            <p>FullTime</p>
-            <p>4+</p>
-          </div>
-        </div>
-      </div> */}
       <JobListingContainer>
         <div className="job-header">
           <h1>All Listings - 20</h1>
