@@ -9,10 +9,6 @@ import { useSelector } from "react-redux";
 export const JobListing = () => {
   const { isAuthendicated } = useSelector((state: any) => state.auth);
 
-  if (!isAuthendicated) {
-    return <SignupPage />;
-  }
-
   const getAllListing = async (url: string) => {
     return await fetch(url).then((data) => data.json());
   };
@@ -29,6 +25,9 @@ export const JobListing = () => {
     navigate("/new-job-listing");
   };
 
+  if (!isAuthendicated) {
+    return <SignupPage />;
+  }
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
   return (

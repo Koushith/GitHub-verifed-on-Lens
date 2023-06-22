@@ -1,17 +1,11 @@
-import {
-  ProfileAttributeReader,
-  useExploreProfiles,
-} from "@lens-protocol/react-web";
-import { formatPicture } from "../../utils/picture.util";
-import { Link, Outlet } from "react-router-dom";
+import { useExploreProfiles } from "@lens-protocol/react-web";
 import { HomePageContainer } from "./home.styles";
-import Check from "../../assets/icons/check.svg";
-import { ProfileCard } from "../../components";
+import { CardShimmer, ProfileCard } from "../../components";
 import { useSelector } from "react-redux";
 import { SignupPage } from "..";
 
 export const Home = () => {
-  const { data: profiles } = useExploreProfiles({
+  const { data: profiles, loading } = useExploreProfiles({
     limit: 50,
   });
 
@@ -22,22 +16,10 @@ export const Home = () => {
   }
   return (
     <HomePageContainer>
-      {/* <div className="p-20">
-        <h1 className="text-5xl">Dev Profiles</h1>
-      </div> */}
-
       <h1>Verified Devs</h1>
 
       <div className="profile-container">
-        {/* <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard /> */}
-
+        {loading && <CardShimmer />}
         {profiles?.map((profile, index) => (
           <ProfileCard key={index} profile={profile} />
         ))}

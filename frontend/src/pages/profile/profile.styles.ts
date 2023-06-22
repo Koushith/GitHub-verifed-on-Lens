@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
+import { tablets, phones } from "../../utils";
 
 export const ProfileImageContainer = styled.div`
-  border-bottom: 1px solid rgb(225, 228, 232);
+  /* border-bottom: 1px solid rgb(225, 228, 232); */
 
   h1 {
     font-size: 2rem;
@@ -30,7 +31,7 @@ export const ProfileImageContainer = styled.div`
 
   .profile-meta {
     margin-top: 2rem;
-
+    border-bottom: 1px solid rgb(225, 228, 232);
     .name {
       font-size: 2.4rem;
       font-weight: 600;
@@ -62,6 +63,18 @@ export const ProfileImageContainer = styled.div`
         }
       }
     }
+  }
+
+  @media (${tablets}) {
+    // Styles for tablets (if needed)
+  }
+
+  /**************************/
+  /* BELOW 544px (Phones) */
+  /**************************/
+
+  @media (${phones}) {
+    padding: 0 2rem;
   }
 `;
 
@@ -107,5 +120,19 @@ export const ProjectsContainer = styled.div`
       border: 1px solid rgb(111, 207, 151);
       cursor: pointer;
     }
+  }
+
+  @media (${tablets}) {
+    // Styles for tablets (if needed)
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /**************************/
+  /* BELOW 544px (Phones) */
+  /**************************/
+
+  @media (${phones}) {
+    padding: 0 2rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;

@@ -35,6 +35,7 @@ export const ProfileCardContainer = styled.div`
       font-size: 1.4rem;
       color: #212121;
       font-weight: 500;
+      margin-top: 0.4rem;
     }
 
     .bio {
