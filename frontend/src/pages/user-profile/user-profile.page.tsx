@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { formatPicture } from "../../utils/picture.util";
 import { Container } from "../../components/common";
 import { CheckIcon } from "../../components";

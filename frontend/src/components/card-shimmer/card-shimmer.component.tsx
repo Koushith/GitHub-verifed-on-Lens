@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import { CheckIcon, Shimmer } from "..";
+import { Shimmer } from "..";
 
-export const ProfileCardContainer = styled.div`
+export const ProfileCardShimmerContainer = styled.div`
   padding: 1rem;
   /* border: 1px solid rgb(225, 228, 232); */
   border-radius: 4px;
@@ -97,7 +97,7 @@ export const ProfileCardContainer = styled.div`
 
 export const CardShimmer = () => {
   return (
-    <ProfileCardContainer>
+    <ProfileCardShimmerContainer>
       <div className="meta">
         <div className="profile-image">
           <>
@@ -116,6 +116,6 @@ export const CardShimmer = () => {
           <Shimmer className="bio-sh" />
         </p>
       </div>
-    </ProfileCardContainer>
+    </ProfileCardShimmerContainer>
   );
 };

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../utils/constants";
 import { useParams } from "react-router-dom";

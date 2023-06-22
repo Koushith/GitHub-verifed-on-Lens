@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { NavLink, useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";

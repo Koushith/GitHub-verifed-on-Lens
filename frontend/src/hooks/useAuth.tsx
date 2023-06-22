@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import {
   Environment,
   LensClient,
@@ -16,7 +18,7 @@ import { useState } from "react";
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { isElegible, lensHandle, authendicate, lensProfile, isAuthendicated } =
-    useSelector((state) => state.auth);
+    useSelector((state) => state?.auth);
   const dispatch = useDispatch();
 
   const authenticate = async () => {
