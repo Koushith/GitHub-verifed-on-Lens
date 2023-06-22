@@ -7,6 +7,7 @@ export const SignupPage = () => {
   const { authenticate, isLoading } = useAuth();
 
   console.log("signup page", authenticate, isLoading);
+
   return (
     <Container>
       <VerifyContainer>
@@ -16,7 +17,7 @@ export const SignupPage = () => {
 
         <Button
           onClick={() => authenticate()}
-          label="Sign In using MetaMask"
+          label={isLoading ? "Signing in...." : "Sign In using MetaMask"}
           style={{ marginTop: "2rem" }}
         />
 

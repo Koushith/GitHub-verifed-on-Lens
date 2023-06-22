@@ -2,13 +2,27 @@ import { formatPicture } from "../../utils/picture.util";
 import { Container } from "../../components/common";
 import { CheckIcon } from "../../components";
 import { ProfileImageContainer, ProjectsContainer } from "./profile.styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SignupPage } from "..";
+import { setVerified } from "../../slices/auth.slice";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../utils/constants";
+import { useEffect } from "react";
 
 export const ProfilePage = () => {
-  const { isElegible, lensProfile, isAuthendicated, isVerified } = useSelector(
+  const { lensProfile, isAuthendicated, isVerified } = useSelector(
     (state: any) => state.auth
   );
+  const dispatch = useDispatch();
+
+  const checkIfVerified = async (id: string) => {
+    const { data } = await axios.get(`${BACKEND_BASE_URL}/user/${id}`);
+
+    console.log(data);
+    if (data?.user?.isVerified) {
+      dispatch(setVerified(true));
+    }
+  };
 
   if (!isAuthendicated) {
     return <SignupPage />;
@@ -17,6 +31,10 @@ export const ProfilePage = () => {
   const parsedLensProfile = JSON.parse(lensProfile.lensProfile);
   console.log("parsed profile", parsedLensProfile);
 
+  useEffect(() => {
+    console.log("effect ran once");
+    checkIfVerified(parsedLensProfile?.handle);
+  }, []);
   return (
     <Container>
       <ProfileImageContainer className="profile-meta">

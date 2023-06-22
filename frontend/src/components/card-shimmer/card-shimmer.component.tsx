@@ -89,7 +89,7 @@ export const ProfileCardContainer = styled.div`
   }
 
   .bio-sh {
-    width: 170px;
+    width: 200px;
     height: 10px;
     margin-top: 4px;
   }
