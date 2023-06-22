@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { SignupPage } from "..";
 
 export const ProfilePage = () => {
-  const { isElegible, lensProfile, isAuthendicated } = useSelector(
+  const { isElegible, lensProfile, isAuthendicated, isVerified } = useSelector(
     (state: any) => state.auth
   );
 
@@ -23,7 +23,8 @@ export const ProfilePage = () => {
         <ProfileImageContainer className="profile-meta">
           <div className="profile-image">
             <img src={formatPicture(parsedLensProfile?.picture)} alt="image" />
-            <CheckIcon className="check-icon" />
+
+            {isVerified && <CheckIcon className="check-icon" />}
           </div>
 
           <div className="profile-meta">

@@ -7,6 +7,8 @@ import {
   VerifyContainer,
 } from "./verify.styles";
 
+import Confetti from "react-confetti";
+
 import toast, { Toaster } from "react-hot-toast";
 
 import axios from "axios";
@@ -55,25 +57,49 @@ export const Verify = () => {
   };
   console.log(callbackId, templateurl);
 
-  const getStatus = async () => {
+  const getStatus = async (callbackId: string) => {
     try {
-      const res = await axios.get(`${BACKEND_BASE_URL}/status/${callbackId}`);
-      console.log(res.data.status);
+      const { data } = await axios.get(
+        `${BACKEND_BASE_URL}/verify/status/${callbackId}`
+      );
+
+      setStatus(data.query.status);
+      console.log(data.query.status);
+
+      if (data.query.status === "VERIFIED") {
+        setStatus("VERIFIED");
+        toast.success("Verified!! you got a tick mark");
+        navigate("/profile");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error while getting status:", error);
+      // Handle the error appropriately (e.g., show an error message)
+      toast.error("Could'nt verify your repo");
     }
   };
 
   useEffect(() => {
-    const id = setTimeout(() => {
-      getStatus();
+    if (!callbackId) return;
+
+    const intervalId = setInterval(() => {
+      getStatus(callbackId);
     }, 3000);
 
-    return () => clearTimeout(id);
+    return () => clearInterval(intervalId);
   }, [callbackId]);
 
   return (
     <Container>
+      {status === "VERIFIED" && <Confetti width={1920} height={900} />}
+
+      <Toaster
+        containerClassName="toast"
+        toastOptions={{
+          style: {
+            fontSize: "16px",
+          },
+        }}
+      />
       <VerifyContainer>
         <div className="left">
           <>

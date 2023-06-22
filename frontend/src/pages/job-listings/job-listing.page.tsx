@@ -3,8 +3,16 @@ import useSwr from "swr";
 import { JobListingContainer } from "./job-listing.styles";
 import { Container } from "../../components/common";
 import { Button, JobCard } from "../../components";
+import { SignupPage } from "..";
+import { useSelector } from "react-redux";
 
 export const JobListing = () => {
+  const { isAuthendicated } = useSelector((state: any) => state.auth);
+
+  if (!isAuthendicated) {
+    return <SignupPage />;
+  }
+
   const getAllListing = async (url: string) => {
     return await fetch(url).then((data) => data.json());
   };

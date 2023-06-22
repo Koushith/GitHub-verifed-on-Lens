@@ -1,4 +1,5 @@
 import { keyframes, styled } from "styled-components";
+import { tablets, phones } from "../../utils";
 
 export const VerifyContainer = styled.div`
   margin-top: 15rem;
@@ -12,6 +13,7 @@ export const VerifyContainer = styled.div`
     font-size: 3.4rem;
     font-weight: 700;
     line-height: 40px;
+    text-align: center;
   }
 
   p {
@@ -19,6 +21,7 @@ export const VerifyContainer = styled.div`
     font-size: 1.6rem;
     color: #4b587c;
     margin-top: 1rem;
+    text-align: center;
   }
 
   .dev-list {
@@ -40,6 +43,18 @@ export const VerifyContainer = styled.div`
         margin-left: -1rem;
       }
     }
+  }
+
+  @media (${tablets}) {
+    // Styles for tablets (if needed)
+  }
+
+  /**************************/
+  /* BELOW 544px (Phones) */
+  /**************************/
+
+  @media (${phones}) {
+    padding: 2rem;
   }
 `;
 

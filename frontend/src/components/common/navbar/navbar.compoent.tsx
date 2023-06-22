@@ -1,27 +1,13 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
-import { useWalletLogin, useWalletLogout } from "@lens-protocol/react-web";
-import { useState, useEffect } from "react";
-// import Bars from "../../../assets/icons/bars.svg";
-// import Close from "../../../assets/icons/close.svg";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { useActiveWallet } from "@lens-protocol/react-web";
+import { Toaster } from "react-hot-toast";
+import { useState } from "react";
+import Bars from "../../../assets/icons/bars.svg";
+import Close from "../../../assets/icons/close.svg";
+import Logo from "../../../assets/icons/logo.svg";
 import { styled } from "styled-components";
 import { phones, tablets } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthState } from "../../../slices/auth.slice";
-import {
-  Environment,
-  LensClient,
-  ProfileFragment,
-  development,
-  production,
-} from "@lens-protocol/client";
-import { telosTestnet } from "wagmi/chains";
-import MetaMaskSDK from "@metamask/sdk";
-import { BACKEND_BASE_URL } from "../../../utils/constants";
+import { useAuth } from "../../../hooks/useAuth";
 
 export const NavbarContainer = styled.div`
   background-color: #fffefe;
@@ -42,13 +28,22 @@ export const NavbarContainer = styled.div`
     }
 
     .logo {
+      display: flex;
       font-weight: 700;
       font-size: 1.6rem;
       text-decoration: none;
       color: #21293c;
       transition: all 0.3s ease;
+      overflow: hidden;
+
       &:hover {
         color: rgb(111, 207, 151);
+      }
+
+      img {
+        height: 24px;
+        width: 24px;
+        margin-right: 0.4rem;
       }
     }
 
@@ -122,6 +117,7 @@ export const NavbarContainer = styled.div`
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { isElegible, lensHandle, authendicate, lensProfile, isAuthendicated } =
     useSelector((state) => state.auth);
@@ -129,73 +125,7 @@ export const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const authenticate = async () => {
-    try {
-      const lensClient = new LensClient({
-        environment: production,
-      });
-
-      const MMSDK = new MetaMaskSDK();
-      const ethereum = MMSDK.getProvider();
-
-      setIsLoading(true);
-      const wallet = await ethereum?.request({
-        method: "eth_requestAccounts",
-        params: [],
-      });
-
-      const address = wallet[0];
-
-      let isAuthenticated = await lensClient.authentication.isAuthenticated();
-
-      if (!isAuthenticated) {
-        console.log("insiode if block");
-        const challenge = await lensClient.authentication.generateChallenge(
-          address
-        );
-        console.log(challenge);
-        const sign = await ethereum?.request({
-          method: "personal_sign",
-          params: [address, challenge],
-        });
-        console.log(sign);
-        await lensClient.authentication.authenticate(address, String(sign));
-      }
-
-      isAuthenticated = await lensClient.authentication.isAuthenticated();
-
-      if (isAuthenticated) {
-        const allOwnedProfiles = await lensClient.profile.fetchAll({
-          ownedBy: address,
-        });
-
-        console.log("all ownered profile", allOwnedProfiles.items);
-        if (allOwnedProfiles.items?.length <= 0) {
-          toast.error(
-            "You dont own any lens profile. please switch the wallet and try again!!"
-          );
-        } else {
-          console.log("code was here------------");
-          const request = await axios.post(
-            `${BACKEND_BASE_URL}/user/register`,
-            {
-              lensProfile: allOwnedProfiles.items[0],
-            }
-          );
-
-          if (request.status === 200 || request.status === 201) {
-            toast.success("Signing in success!!");
-            dispatch(setAuthState(request.data.user));
-          }
-        }
-      }
-    } catch (error: any) {
-      toast.error("Something went wrong...");
-      console.log("auth error", error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { authenticate } = useAuth();
 
   return (
     <NavbarContainer>
@@ -209,7 +139,7 @@ export const Navbar = () => {
       />
       <nav>
         <NavLink className="logo" to="/">
-          GIT VERIFIED
+          <img src={Logo} alt="logo" /> Verified
         </NavLink>
         <ul>
           <li>
@@ -268,13 +198,27 @@ export const Navbar = () => {
 
         {isOpen ? (
           <div className="mobile-nav">
-            {/* {" "}
-            <img src={Close} alt="close" /> */}
-            x
+            <img src={Close} alt="close" onClick={() => setOpen(!open)} />
           </div>
         ) : (
           <div className="mobile-nav">
-            {/* <img src={Bars} alt="open" /> */}o
+            <img src={Bars} alt="open" onClick={() => setOpen(!open)} />
+          </div>
+        )}
+
+        {open && (
+          <div className="mobile-nav mob-nav">
+            <ul>
+              <li>
+                <NavLink to="/how-it-works" onClick={() => setOpen(!open)}>
+                  {" "}
+                  How It Works?
+                </NavLink>
+                <NavLink to="/about" onClick={() => setOpen(!open)}>
+                  About
+                </NavLink>
+              </li>
+            </ul>
           </div>
         )}
       </nav>

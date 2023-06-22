@@ -9,6 +9,8 @@ import {
 import { Container } from "../../components/common";
 import { Button } from "../../components";
 import { JobDeailsShimmer } from "./job-details.shimmer";
+import { useSelector } from "react-redux";
+import { SignupPage } from "..";
 
 interface Job {
   position: string;
@@ -25,6 +27,9 @@ export const JobDetails = () => {
   const [job, setJob] = useState<Job>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
+
+  const { isAuthendicated } = useSelector((state: any) => state.auth);
+
   const getJobDetail = async () => {
     try {
       setIsLoading(true);
@@ -39,6 +44,17 @@ export const JobDetails = () => {
   useEffect(() => {
     getJobDetail();
   }, []);
+
+  if (!isAuthendicated) {
+    return <SignupPage />;
+  }
+
+  const openEmailClient = (email: string, subject: string, body: string) => {
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
 
   return (
     <Container>
@@ -67,7 +83,17 @@ export const JobDetails = () => {
               </div>
             </div>
 
-            <Button label="apply" />
+            <Button
+              label="apply"
+              className="apply-btn"
+              onClick={() =>
+                openEmailClient(
+                  job.email,
+                  `Applying to ${job.position} position`,
+                  "iam wring t..."
+                )
+              }
+            />
           </div>
 
           <RichTextEditorContainer

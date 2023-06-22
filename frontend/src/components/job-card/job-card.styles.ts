@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { tablets, phones } from "../../utils";
 
 export const JobCardContainer = styled.div`
   padding: 1rem;
@@ -10,6 +11,7 @@ export const JobCardContainer = styled.div`
   transition: 0.3s all;
   cursor: pointer;
   .logo {
+    flex-basis: 60px;
     img {
       border-radius: 50%;
       height: 40px;
@@ -71,5 +73,21 @@ export const JobCardContainer = styled.div`
   &:hover {
     background-color: rgb(246, 248, 250, 1);
     border-color: #6fcf97;
+  }
+
+  @media (${tablets}) {
+    .logo {
+      flex-basis: 60px;
+    }
+  }
+
+  /**************************/
+  /* BELOW 544px (Phones) */
+  /**************************/
+
+  @media (${phones}) {
+    .logo {
+      flex-basis: 60px;
+    }
   }
 `;

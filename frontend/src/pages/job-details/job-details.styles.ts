@@ -83,6 +83,10 @@ export const JobDetailContainer = styled.section`
 
     .company-info {
       flex-direction: column;
+      align-items: flex-start;
+      .apply-btn {
+        width: 100%;
+      }
     }
   }
 `;

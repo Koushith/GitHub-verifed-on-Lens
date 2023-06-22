@@ -4,6 +4,7 @@ const initialState = {
   isEligible: false,
   lensProfile: {},
   isAuthendicated: false,
+  isVerified: false,
 };
 
 const authSlice = createSlice({
@@ -19,8 +20,11 @@ const authSlice = createSlice({
       state.isAuthendicated = true;
       state.isEligible = true;
     },
+    setVerified: (state, action) => {
+      state.isVerified = action.payload;
+    },
   },
 });
 
 export const authReducer = authSlice.reducer;
-export const { authendicate, setAuthState } = authSlice.actions;
+export const { authendicate, setAuthState, setVerified } = authSlice.actions;

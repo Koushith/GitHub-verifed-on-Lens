@@ -146,7 +146,6 @@ export const CheckIcon = ({ className }: any) => {
           </linearGradient>
         </defs>
       </svg>
-      ;
     </div>
   );
 };

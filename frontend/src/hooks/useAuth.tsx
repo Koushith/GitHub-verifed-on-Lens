@@ -8,7 +8,7 @@ import {
 import MetaMaskSDK from "@metamask/sdk";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthState } from "../slices/auth.slice";
+import { setAuthState, setVerified } from "../slices/auth.slice";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../utils/constants";
 import { useState } from "react";
@@ -74,8 +74,18 @@ export const useAuth = () => {
           );
 
           if (request.status === 200 || request.status === 201) {
+            const { data } = await axios.get(
+              `${BACKEND_BASE_URL}/user/${request.data.user.lensHandle}`
+            );
+
+            if (data?.user?.isVerified) {
+              dispatch(setVerified(true));
+            }
+
             toast.success("Signing in success!!");
             dispatch(setAuthState(request.data.user));
+
+            //check for verification tick marl
           }
         }
       }
