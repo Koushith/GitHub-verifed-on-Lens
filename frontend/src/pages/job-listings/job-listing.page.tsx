@@ -6,6 +6,7 @@ import { Button, JobCard } from "../../components";
 import { SignupPage } from "..";
 import { useSelector } from "react-redux";
 import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
+import { BACKEND_BASE_URL } from "../../utils/constants";
 
 export const JobListing = () => {
   const { isAuthendicated } = useSelector((state: any) => state.auth);
@@ -16,7 +17,7 @@ export const JobListing = () => {
 
   const navigate = useNavigate();
   const { data, error, isLoading } = useSwr(
-    "http://localhost:8000/company/job",
+    `${BACKEND_BASE_URL}/company/job`,
     getAllListing
   );
 

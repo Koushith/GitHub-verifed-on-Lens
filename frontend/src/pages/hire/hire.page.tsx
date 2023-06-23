@@ -103,14 +103,7 @@ export const NewJobListingPage = () => {
             value={formData.website}
             onChange={formChangeHandler}
           />
-          <Input
-            label="logo"
-            type="file"
-            placeholder="www.domain.com"
-            name="website"
-            value={formData.website}
-            onChange={formChangeHandler}
-          />
+
           <Input
             label="Location"
             placeholder="Remote"
