@@ -61,9 +61,26 @@ export const ProfilePage = () => {
     <Container>
       <ProfileImageContainer className="profile-meta">
         <div className="profile-image">
-          <img src={formatPicture(parsedLensProfile?.picture)} alt="image" />
-
-          {isVerified && <CheckIcon className="check-icon" />}
+          {parsedLensProfile?.picture &&
+          parsedLensProfile?.picture.__typename === "MediaSet" ? (
+            <div className="profile-image">
+              <img
+                src={formatPicture(parsedLensProfile?.picture)}
+                width="120"
+                height="120"
+                alt={parsedLensProfile?.handle}
+              />
+              {isVerified && <CheckIcon className="check-icon" />}
+            </div>
+          ) : (
+            <div className="profile-image">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
+                alt="image"
+              />
+              {isVerified && <CheckIcon className="check-icon" />}
+            </div>
+          )}
         </div>
 
         <div className="profile-meta">

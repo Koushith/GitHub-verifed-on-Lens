@@ -13,6 +13,7 @@ import { Button } from "../../components";
 import { JobDeailsShimmer } from "./job-details.shimmer";
 import { useSelector } from "react-redux";
 import { SignupPage } from "..";
+import Logo from "../../assets/icons/placeholder-logo.jpg";
 
 interface Job {
   position: string;
@@ -67,12 +68,7 @@ export const JobDetails = () => {
           <div className="company-info">
             <div>
               <div className="logo">
-                <img
-                  src={
-                    "https://dqy38fnwh4fqs.cloudfront.net/company/COMHA9R7A7QKK8GMO1ARB988BMENRN/logo.webp"
-                  }
-                  alt="logo"
-                />
+                <img src={Logo} alt="logo" />
                 <div className="info">
                   <h2>{job?.companyName}</h2>
                   <p className="position">{job?.position}</p>
