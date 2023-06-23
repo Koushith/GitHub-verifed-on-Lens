@@ -145,12 +145,12 @@ export const Navbar = () => {
         </NavLink>
         <ul>
           <li>
-            <NavLink to="/verify"> Get Verified</NavLink>
             <NavLink to="/job-listings"> Job Listings</NavLink>
 
             {isAuthendicated && (
               <>
                 <>
+                  <NavLink to="/verify"> Get Verified</NavLink>
                   <NavLink to="/profile">Profile</NavLink>
                   <button className="icon-btn">
                     {" "}
