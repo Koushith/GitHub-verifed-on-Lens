@@ -1,16 +1,12 @@
-import { useExploreProfiles } from "@lens-protocol/react-web";
+import useSwr from "swr";
+import axios from "axios";
 import { HomePageContainer } from "./home.styles";
 import { CardShimmer, ProfileCard } from "../../components";
 import { useSelector } from "react-redux";
 import { SignupPage } from "..";
-import useSwr from "swr";
-import axios from "axios";
 import { BACKEND_BASE_URL } from "../../utils/constants";
-export const Home = () => {
-  // const { data: profiles, loading } = useExploreProfiles({
-  //   limit: 50,
-  // });
 
+export const Home = () => {
   const fetchAllusers = async (url: string) => {
     return await axios.get(url);
   };
@@ -18,7 +14,7 @@ export const Home = () => {
     `${BACKEND_BASE_URL}/user`,
     fetchAllusers
   );
-  console.log(data);
+
   const { isAuthendicated } = useSelector((state: any) => state.auth);
 
   if (!isAuthendicated) {
@@ -27,7 +23,7 @@ export const Home = () => {
 
   return (
     <HomePageContainer>
-      <h1>Verified Devs</h1>
+      <h1>All Devs </h1>
       {isLoading && (
         <div className="profile-container">
           {new Array(20).fill("").map((_, i) => (

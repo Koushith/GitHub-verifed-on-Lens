@@ -1,3 +1,10 @@
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
+import Confetti from "react-confetti";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Button, Input } from "../../components";
 import { Container } from "../../components/common";
 import {
@@ -6,26 +13,15 @@ import {
   Spinner,
   VerifyContainer,
 } from "./verify.styles";
-
-import Confetti from "react-confetti";
-
-import toast, { Toaster } from "react-hot-toast";
-
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { QRCodeSVG } from "qrcode.react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { keyframes, styled } from "styled-components";
-import { useSelector } from "react-redux";
 import { extractGitHubRepoPath } from "../../utils";
 
 export const Verify = () => {
-  const { isElegible, lensProfile } = useSelector((state: any) => state.auth);
+  const { lensProfile } = useSelector((state: any) => state.auth);
   const [formData, setFormData] = useState({
     email: "",
     repo: "",
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [callbackId, setCallbackId] = useState("");
   const [templateurl, setTemplateUrl] = useState("");
@@ -43,16 +39,19 @@ export const Verify = () => {
     console.log(lensProfile.lensHandle);
 
     try {
+      setIsLoading(true);
       const { data } = await axios.post(`${BACKEND_BASE_URL}/verify/init`, {
         email: formData.email,
         lensProfile: lensProfile?.lensHandle,
         repoFullName: extractGitHubRepoPath(formData.repo),
       });
-      console.log("res", data);
+
       setCallbackId(data?.callbackId);
       setTemplateUrl(data?.templateUrl);
     } catch (err) {
       console.log("some error occured");
+    } finally {
+      setIsLoading(false);
     }
   };
   console.log(callbackId, templateurl);
@@ -112,8 +111,6 @@ export const Verify = () => {
                       placeholder="Your Lens Id- it will be autofilled"
                       value={lensProfile?.lensHandle}
                       required
-
-                      //   onChange={(e: any) => setEmail(e.target.value)}
                     />
                   </div>
 
@@ -134,12 +131,11 @@ export const Verify = () => {
                       value={formData.repo}
                       required
                       onChange={handleFormData}
-                      //   onChange={(e: any) => setEmail(e.target.value)}
                     />
                   </div>
 
                   <Button
-                    label="Prove"
+                    label={isLoading ? "Generating Link..." : "Prove"}
                     style={{ width: "100%" }}
                     onClick={submitHandler}
                     className="prove-button"
