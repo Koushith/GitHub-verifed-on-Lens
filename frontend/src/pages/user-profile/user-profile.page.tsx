@@ -23,6 +23,26 @@ export const UserProfilePage = () => {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [parsedProfile, setParsedProfile] = useState();
+  const [githubRepos, setGithubRepos] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  const fetchUserRepositories = async (username: string, perPage = 6) => {
+    console.log("user name", userName);
+
+    try {
+      setIsFetching(true);
+      const apiUrl = `https://api.github.com/users/${username}/repos?per_page=${perPage}`;
+
+      const { data } = await axios.get(apiUrl);
+      console.log("github data------", data);
+      setGithubRepos(data);
+    } catch (err) {
+      console.log("couldnt fectch github profile", err);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   if (!isAuthendicated) {
     return <SignupPage />;
@@ -36,6 +56,8 @@ export const UserProfilePage = () => {
       console.log("data----", data.user);
       setProfile(data?.user);
       setParsedProfile(data?.user?.lensProfile);
+      setUserName(data.user.github);
+      console.log(data.user.github);
       if (data) {
         let parsedLensProfile = JSON.parse(data?.user?.lensProfile);
         setParsedProfile(parsedLensProfile);
@@ -52,6 +74,10 @@ export const UserProfilePage = () => {
   useEffect(() => {
     fetchUserProfile();
   }, [id]);
+
+  useEffect(() => {
+    fetchUserRepositories(userName);
+  }, [id, userName]);
 
   return (
     <Container>
@@ -92,25 +118,28 @@ export const UserProfilePage = () => {
               <h1 style={{ margin: "2rem 0", fontSize: "1.8rem" }}>Projects</h1>
 
               <ProjectsContainer className="projects-container">
-                <div className="project-card">
-                  <div>
-                    <p className="repo-name">YC Deals</p>
-                    <p className="desc">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Nisi, non.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="project-card">
-                  <div>
-                    <p className="repo-name">YC Deals</p>
-                    <p className="desc">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Nisi, non.
-                    </p>
-                  </div>
-                </div>
+                {isFetching ? (
+                  <>loading</>
+                ) : (
+                  <>
+                    {githubRepos.map((repo) => (
+                      <div
+                        className="project-card"
+                        key={repo?.id}
+                        onClick={() => window.open(repo.clone_url, "_next")}
+                      >
+                        <div>
+                          <p className="repo-name">{repo.name}</p>
+                          <p className="desc">
+                            {repo.description
+                              ? repo.description
+                              : "Description is not avaliable for this project"}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
               </ProjectsContainer>
             </div>
           )}

@@ -4,22 +4,40 @@ import { CheckIcon } from "../../components";
 import { ProfileImageContainer, ProjectsContainer } from "./profile.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { SignupPage } from "..";
-import { setVerified } from "../../slices/auth.slice";
+import { setGithub, setVerified } from "../../slices/auth.slice";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../utils/constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const ProfilePage = () => {
-  const { lensProfile, isAuthendicated, isVerified } = useSelector(
-    (state: any) => state.auth
-  );
+  const { lensProfile, isAuthendicated, isVerified, gitHubUserName } =
+    useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
+
+  const [githubRepos, setGithubRepos] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const fetchUserRepositories = async (username: string, perPage = 6) => {
+    try {
+      setIsFetching(true);
+      const apiUrl = `https://api.github.com/users/${username}/repos?per_page=${perPage}`;
+
+      const { data } = await axios.get(apiUrl);
+      console.log("github data------", data);
+      setGithubRepos(data);
+    } catch (err) {
+      console.log("couldnt fectch github profile", err);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   const checkIfVerified = async (id: string) => {
     const { data } = await axios.get(`${BACKEND_BASE_URL}/user/${id}`);
 
     console.log(data);
     if (data?.user?.isVerified) {
+      dispatch(setGithub(data?.user?.github));
       dispatch(setVerified(true));
     }
   };
@@ -27,7 +45,7 @@ export const ProfilePage = () => {
   if (!isAuthendicated) {
     return <SignupPage />;
   }
-
+  console.log("allll--profile", lensProfile);
   const parsedLensProfile = JSON.parse(lensProfile.lensProfile);
   console.log("parsed profile", parsedLensProfile);
 
@@ -35,6 +53,10 @@ export const ProfilePage = () => {
     console.log("effect ran once");
     checkIfVerified(parsedLensProfile?.handle);
   }, []);
+
+  useEffect(() => {
+    fetchUserRepositories(gitHubUserName);
+  }, [gitHubUserName]);
   return (
     <Container>
       <ProfileImageContainer className="profile-meta">
@@ -60,49 +82,28 @@ export const ProfilePage = () => {
       </ProfileImageContainer>
 
       <ProjectsContainer className="projects-container">
-        <div className="project-card">
-          <div>
-            <p className="repo-name">YC Deals</p>
-            <p className="desc">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-              non.
-            </p>
-          </div>
-        </div>
-
-        <div className="project-card">
-          <div>
-            <p className="repo-name">YC Deals</p>
-            <p className="desc">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-              non.
-            </p>
-          </div>
-        </div>
-
-        <div className="project-card">
-          {/* rgb(111, 207, 151) */}
-
-          <div>
-            <p className="repo-name">YC Deals</p>
-            <p className="desc">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-              non.
-            </p>
-          </div>
-        </div>
-
-        <div className="project-card">
-          {/* rgb(111, 207, 151) */}
-
-          <div>
-            <p className="repo-name">YC Deals</p>
-            <p className="desc">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-              non.
-            </p>
-          </div>
-        </div>
+        {isFetching ? (
+          <>loading</>
+        ) : (
+          <>
+            {githubRepos.map((repo) => (
+              <div
+                className="project-card"
+                key={repo?.id}
+                onClick={() => window.open(repo.clone_url, "_next")}
+              >
+                <div>
+                  <p className="repo-name">{repo.name}</p>
+                  <p className="desc">
+                    {repo.description
+                      ? repo.description
+                      : "Description is not avaliable for this project"}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </ProjectsContainer>
     </Container>
   );

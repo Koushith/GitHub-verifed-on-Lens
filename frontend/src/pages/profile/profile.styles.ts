@@ -93,14 +93,15 @@ export const ProjectsContainer = styled.div`
     justify-content: space-between;
 
     .repo-name {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: 600;
       color: #212121;
+      margin-bottom: 0.6rem;
     }
 
     .desc {
       color: #444d56;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: 400;
       line-height: 20px;
       overflow: hidden;

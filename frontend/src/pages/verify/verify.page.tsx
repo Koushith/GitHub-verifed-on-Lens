@@ -44,6 +44,7 @@ export const Verify = () => {
         email: formData.email,
         lensProfile: lensProfile?.lensHandle,
         repoFullName: extractGitHubRepoPath(formData.repo),
+        repoLink: formData.repo,
       });
 
       setCallbackId(data?.callbackId);

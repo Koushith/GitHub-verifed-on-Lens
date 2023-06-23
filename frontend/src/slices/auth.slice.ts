@@ -5,6 +5,7 @@ const initialState = {
   lensProfile: {},
   isAuthendicated: false,
   isVerified: false,
+  gitHubUserName: "",
 };
 
 const authSlice = createSlice({
@@ -23,8 +24,12 @@ const authSlice = createSlice({
     setVerified: (state, action) => {
       state.isVerified = action.payload;
     },
+    setGithub: (state, action) => {
+      state.gitHubUserName = action.payload;
+    },
   },
 });
 
 export const authReducer = authSlice.reducer;
-export const { authendicate, setAuthState, setVerified } = authSlice.actions;
+export const { authendicate, setAuthState, setVerified, setGithub } =
+  authSlice.actions;

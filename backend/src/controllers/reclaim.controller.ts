@@ -4,25 +4,21 @@ import { PrismaClient } from "@prisma/client";
 import { Proof, reclaimprotocol } from "@reclaimprotocol/reclaim-sdk";
 import { generateUuid } from "@reclaimprotocol/reclaim-sdk/dist/utils";
 import { Request, Response } from "express";
-import { isValidRepo } from "../utils";
+import { extractUsernameFromRepoLink, isValidRepo } from "../utils";
 import { isEqual } from "lodash";
-// get -> check the status -> verifuied? pending?
-
-// post -> capture the response fron rn and update the status
 
 const prisma = new PrismaClient();
 const reclaim = new reclaimprotocol.Reclaim();
 
 export const initSession = async (req: Request, res: Response) => {
-  const { email, repoFullName, lensProfile } = req.body;
-  console.log("email-", email, repoFullName, lensProfile);
+  const { email, repoFullName, lensProfile, repoLink } = req.body;
+  console.log("email-", repoLink);
+
+  const extractGitUserName = extractUsernameFromRepoLink(repoLink);
+  console.log("extractedGituser name", extractGitUserName);
 
   const CALLBACK_URL = process.env.CALLBACK_URL! + "/" + "callback/";
   const CALLBACK_PREFIX = "gitlens-";
-  // if (!isValidRepo(repoFullName)) {
-  //   res.status(400).send(`400 - Bad Request: invalid repository name`);
-  //   return;
-  // }
 
   if (!email && !repoFullName) {
     res.status(400).json({
@@ -82,7 +78,16 @@ export const initSession = async (req: Request, res: Response) => {
           lensProfile: lensProfile,
         },
       });
-
+      //add reponame to user schema
+      await prisma.user.updateMany({
+        where: {
+          lensHandle: lensProfile,
+        },
+        data: {
+          github: extractGitUserName,
+          email: email,
+        },
+      });
       if (reclaim) {
         res.status(200).json({
           message: "record created",
@@ -226,16 +231,6 @@ export const responseFromReclaimWallet = async (
     }
     console.log("record---final--", record);
     if (record.status === "VERIFIED") {
-      //find by lend id and update there aswell
-      // await prisma.user.update({
-      //   where: {
-      //     email: record.lensProfile,
-      //   },
-      //   data: {
-      //     isVerified: true,
-      //   },
-      // });
-
       res.status(400).send(`<!DOCTYPE html>
     <html>
       <head>
