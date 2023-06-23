@@ -6,6 +6,7 @@ export const ProfileCardContainer = styled.div`
   padding: 1rem;
   border: 1px solid rgb(225, 228, 232);
   border-radius: 4px;
+  cursor: pointer;
   .meta {
     display: flex;
     align-items: flex-start;
