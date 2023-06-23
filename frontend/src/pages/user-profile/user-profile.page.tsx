@@ -48,15 +48,10 @@ export const UserProfilePage = () => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     fetchUserProfile();
   }, [id]);
-
-  // const { data, isLoading } = useSwr(
-  //   `${BACKEND_BASE_URL}/user/${id}`,
-  //   fetchUserProfile
-  // );
-  console.log("dataaaaaaaaa");
 
   return (
     <Container>

@@ -284,7 +284,7 @@ export const responseFromReclaimWallet = async (
       <body style="height: 100vh;">
 	  <div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
         <p style='text-align: center; font-size: 20px;'>
-           Congratulations on verifying your contribution to the repository! Gain priority access to the swag by going back to the website and share your excitement with a tweet. Don't miss out on getting your hands on the amazing swag! &#129395;
+           Congratulations on verifying your contribution to the repository! You are now Verified
        </p>
 	   </div>
       </body>
