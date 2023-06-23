@@ -1,14 +1,14 @@
-import { formatPicture } from "../../utils/picture.util";
-import { Container } from "../../components/common";
-import { CheckIcon } from "../../components";
-import { ProfileImageContainer, ProjectsContainer } from "./profile.styles";
-import { useDispatch, useSelector } from "react-redux";
-import { SignupPage } from "..";
-import { setGithub, setVerified } from "../../slices/auth.slice";
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../../utils/constants";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SignupPage } from "../";
+import { CheckIcon } from "../../components";
+import { Container } from "../../components/common";
 import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
+import { setGithub, setVerified } from "../../slices/auth.slice";
+import { BACKEND_BASE_URL } from "../../utils/constants";
+import { formatPicture } from "../../utils/picture.util";
+import { ProfileImageContainer, ProjectsContainer } from "./profile.styles";
 
 export const ProfilePage = () => {
   const { lensProfile, isAuthendicated, isVerified, gitHubUserName } =

@@ -1,26 +1,22 @@
 //@ts-nocheck
-
-import { formatPicture } from "../../utils/picture.util";
-import { Container } from "../../components/common";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { SignupPage } from "../";
 import { CheckIcon } from "../../components";
+import { Container } from "../../components/common";
+import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
+import { BACKEND_BASE_URL } from "../../utils/constants";
+import { formatPicture } from "../../utils/picture.util";
+import { JobDeailsShimmer } from "../job-details/job-details.shimmer";
 import {
   ProfileImageContainer,
   ProjectsContainer,
 } from "../profile/profile.styles";
-import { useSelector } from "react-redux";
-import { SignupPage } from "..";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { LensClient, ProfileFragment, production } from "@lens-protocol/client";
-import { BACKEND_BASE_URL } from "../../utils/constants";
-import axios from "axios";
-import useSwr from "swr";
-import { JobDeailsShimmer } from "../job-details/job-details.shimmer";
-import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
+
 export const UserProfilePage = () => {
-  const { isElegible, lensProfile, isAuthendicated } = useSelector(
-    (state: any) => state.auth
-  );
+  const { isAuthendicated } = useSelector((state: any) => state.auth);
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [parsedProfile, setParsedProfile] = useState();
