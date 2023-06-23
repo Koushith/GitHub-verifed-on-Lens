@@ -17,6 +17,7 @@ model User {
   wallet      String?
   lensProfile String?
   email       String?
+  github      String?
 }
 
 model Intrests {

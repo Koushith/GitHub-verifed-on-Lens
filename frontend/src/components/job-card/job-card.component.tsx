@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { JobCardContainer } from "./job-card.styles";
+import Logo from "../../assets/icons/placeholder-logo.jpg";
 
 export const JobCard = (props: any) => {
   const { job } = props;
@@ -11,12 +12,7 @@ export const JobCard = (props: any) => {
   return (
     <JobCardContainer onClick={() => navigateToDetails(job?.id)}>
       <div className="logo">
-        <img
-          src="https://dqy38fnwh4fqs.cloudfront.net/company/COMHA9R7A7QKK8GMO1ARB988BMENRN/logo.webp"
-          alt="logo"
-          height={40}
-          width={40}
-        />
+        <img src={Logo} alt="logo" height={40} width={40} />
       </div>
       <div className="job-info">
         <h2>

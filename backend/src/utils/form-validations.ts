@@ -6,3 +6,13 @@ export const validateEmail = (email: string) => {
 export const isValidRepo = (repoStr: string) => {
   return repoStr.indexOf("/") > -1 && repoStr.split("/").length === 2;
 };
+
+export const extractUsernameFromRepoLink = (repoLink: string) => {
+  const regex = /github\.com\/([^/]+)\/[^/]+/;
+  const match = repoLink.match(regex);
+
+  if (match && match[1]) {
+    return match[1];
+  }
+  return null;
+};
