@@ -74,7 +74,7 @@ export const ProfileImageContainer = styled.div`
   /**************************/
 
   @media (${phones}) {
-    padding: 0 2rem;
+    /* padding: 0 2rem; */
   }
 `;
 
@@ -133,7 +133,7 @@ export const ProjectsContainer = styled.div`
   /**************************/
 
   @media (${phones}) {
-    padding: 0 2rem;
+    /* padding: 0 2rem; */
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
