@@ -8,6 +8,7 @@ import { setGithub, setVerified } from "../../slices/auth.slice";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../utils/constants";
 import { useEffect, useState } from "react";
+import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
 
 export const ProfilePage = () => {
   const { lensProfile, isAuthendicated, isVerified, gitHubUserName } =
@@ -100,7 +101,11 @@ export const ProfilePage = () => {
 
       <ProjectsContainer className="projects-container">
         {isFetching ? (
-          <>loading</>
+          <>
+            {new Array(6).fill("").map((_, i) => (
+              <JobCardShimmer key={i} />
+            ))}
+          </>
         ) : (
           <>
             {githubRepos.map((repo) => (

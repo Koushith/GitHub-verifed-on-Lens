@@ -16,6 +16,7 @@ import { BACKEND_BASE_URL } from "../../utils/constants";
 import axios from "axios";
 import useSwr from "swr";
 import { JobDeailsShimmer } from "../job-details/job-details.shimmer";
+import { JobCardShimmer } from "../../components/job-card/job-card.shimmer";
 export const UserProfilePage = () => {
   const { isElegible, lensProfile, isAuthendicated } = useSelector(
     (state: any) => state.auth
@@ -90,15 +91,6 @@ export const UserProfilePage = () => {
           ) : (
             <div>
               <ProfileImageContainer className="profile-meta">
-                {/* <div className="profile-image">
-                  <img
-                    src={formatPicture(parsedProfile?.picture)}
-                    alt="image"
-                  />
-
-                  {profile?.isVerified && <CheckIcon className="check-icon" />}
-                </div> */}
-
                 {parsedProfile?.picture &&
                 parsedProfile?.picture.__typename === "MediaSet" ? (
                   <div className="profile-image">
@@ -144,7 +136,11 @@ export const UserProfilePage = () => {
 
               <ProjectsContainer className="projects-container">
                 {isFetching ? (
-                  <>loading</>
+                  <>
+                    {new Array(6).fill("").map((_, i) => (
+                      <JobCardShimmer key={i} />
+                    ))}
+                  </>
                 ) : (
                   <>
                     {githubRepos.map((repo) => (
